@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ADLList from '../ADLList/ADLList'
 export default class Resident extends Component {
     // constructor(){
     //     super();
@@ -14,7 +13,7 @@ export default class Resident extends Component {
         const { pickResidentFn, extraInfo } = this.props;
         return(
             <div>
-                <img src = {pic} onClick = { () => pickResidentFn(id) }/>
+                <img src = {pic} onClick = { () => pickResidentFn(id) } alt='Resident'/>
                 <p>{lastName}, { firstName }</p>
                 { (extraInfo)
                 ? <div>

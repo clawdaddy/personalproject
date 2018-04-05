@@ -128,11 +128,11 @@ export default class ADLList extends Component {
                                 value: 8
                             }
                         ],
-                        secondarySelected: -1,
+                        selected: -1,
                     },
                     tertiary:{
                         explain: "type of bathing",
-                        tertiaryChoices: [
+                        choices: [
                             {
                                 choice:'Shower', 
                                 value: 0
@@ -146,12 +146,11 @@ export default class ADLList extends Component {
                                 value:2
                             }
                         ],
-                        tertiarySelected: -1
+                        selected: -1
                     }
                 }
             ],
             currentADL:-1,
-            choices: []
         }
         this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );

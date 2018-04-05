@@ -82,9 +82,7 @@ export default class ResidentList extends Component {
             )
         })
         let currentResident = _.find(residents, (resident) => {
-            {
                 return resident.id === currentResidentID
-            }
         })
         
         return(
