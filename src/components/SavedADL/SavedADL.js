@@ -6,7 +6,7 @@ export default class SavedADL extends Component{
         super();
         this.state = {
             displayChoice: -1,
-            text:""
+            text:"none selected"
         }
     }
     componentDidUpdate ( prevProps ){
@@ -14,7 +14,7 @@ export default class SavedADL extends Component{
         const { prevChoiceSet } = prevProps;
         const { displayChoice } = this.state;
         let choiceText = ""
-        if ( choiceSet.selected === -1 || displayChoice === -1){
+        if ( choiceSet.selected === -1 ){
             choiceText = 'none selected'
         } 
         else if ( displayChoice === choiceSet.selected){
