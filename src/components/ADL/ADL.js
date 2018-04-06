@@ -16,12 +16,12 @@ export default function ADL( props ){
     let tertiaryButtons = [];
     
     
-    function displayButtons (choiceSet, choiceExplain, choiceValue) {
+    function displayButtons ( choiceSet ) {
         if (choiceSet){
             let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (
                     <button key = { i }
-                    onClick = { () => { handleValueFn( choice.value, choice.ADLSchemaID, moment().format('Do MMMM YYYY, h:mm:ss a'));
+                    onClick = { () => { handleValueFn( choiceSet, choice.value, ADLSchemaID, moment().format('Do MMMM YYYY, h:mm:ss a'));
                     }}>{ choice.choice }
                     </button>
                 )
@@ -30,7 +30,7 @@ export default function ADL( props ){
             <div>
                 <p>{ choiceSet.explain }</p>
                 { choiceButtons }
-                <SavedADL/>
+                <SavedADL choiceSet = { choiceSet }/>
             </div>)
 
         } else {

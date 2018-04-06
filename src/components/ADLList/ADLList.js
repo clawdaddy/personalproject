@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ADLButton from '../ADLButton/ADLButton';
 import ADL from '../ADL/ADL';
+import SavedADL from '../SavedADL/SavedADL'
 import _ from 'lodash';
 export default class ADLList extends Component {
     constructor(){
@@ -41,6 +42,7 @@ export default class ADLList extends Component {
                             }
                         ],
                         selected : -1,
+                        timeStamp: null
                     },
                     secondary: {
                         explain:"Support Provided",
@@ -66,7 +68,8 @@ export default class ADLList extends Component {
                                 value: 8
                             }
                         ],
-                        selected : -1
+                        selected : -1,
+                        timeStamp: null
                     }
                 },
                 {
@@ -103,6 +106,7 @@ export default class ADLList extends Component {
                             }
                             ],
                             selected: -1,
+                            timeStamp: null
                         },   
                     secondary:{
                         explain: "Support Provided",
@@ -129,6 +133,7 @@ export default class ADLList extends Component {
                             }
                         ],
                         selected: -1,
+                        timeStamp: null
                     },
                     tertiary:{
                         explain: "type of bathing",
@@ -146,7 +151,8 @@ export default class ADLList extends Component {
                                 value:2
                             }
                         ],
-                        selected: -1
+                        selected: -1,
+                        timeStamp: null
                     }
                 }
             ],
@@ -159,7 +165,19 @@ export default class ADLList extends Component {
         this.setState({currentADL: ADLSchemaID})
     }
 
-    handleValue ( choiceValue, choiceID, timeStamp ){
+    handleValue ( choiceSet, choiceValue, choiceID, timeStamp ){
+        const { list } = this.state;
+        let newList = [...list];
+        let adlIndex = _.findIndex( newList, ( adl ) => {
+            return adl.ADLSchemaID === choiceID ;
+        })
+        let key = _.findKey(newList[adlIndex], ( property ) => {
+            return property.explain === choiceSet.explain;
+        })
+        
+        newList[adlIndex][key].selected = choiceValue;
+        newList[adlIndex][key].timeStamp = timeStamp;
+        this.setState({ list: newList });
         
     }
     chosenADL (){
@@ -167,8 +185,11 @@ export default class ADLList extends Component {
         if ( currentADL >= 0 ){
             let displayADL = _.find(list, ( element ) => { return element.ADLSchemaID === currentADL } )
             return (
-                <ADL displayADL = {displayADL} 
-                handleValueFn = { this.handleValue }/>
+                <div>
+                    <ADL displayADL = {displayADL} 
+                    handleValueFn = { this.handleValue }/>
+                    {/* <SavedADL choiceSet = { displayADL} /> */}
+                </div>
             )
         }
     }
