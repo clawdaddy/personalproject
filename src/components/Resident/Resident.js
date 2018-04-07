@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './_Resident.scss'
 export default class Resident extends Component {
     // constructor(){
     //     super();

@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { loginUser } from './../../ducks/reducer';
 import { Link }  from 'react-router-dom';
+import Button from 'material-ui/Button';
+import './_Login.scss';
+
+
 
 function Login () {
         return (
-            <div>
-                <div>
-                    <a href = 'http://localhost:3005/auth'><button>Login</button></a>
-                </div>
+            <div className = 'login'>
+                <h1>Oh CNAp</h1>
+                <a href = 'http://localhost:3005/auth'>
+                    <Button variant='raised' >
+                        Login
+                    </Button>
+                </a>
             </div>
         )
     }

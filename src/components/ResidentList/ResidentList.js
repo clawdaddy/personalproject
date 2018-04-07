@@ -86,7 +86,7 @@ export default class ResidentList extends Component {
         })
         
         return(
-            <div>
+            <div className='List'>
                 Resident List
                 { resList }
                 <Resident   resident = { currentResident }

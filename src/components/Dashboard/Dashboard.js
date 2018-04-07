@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import ResidentList from '../ResidentList/ResidentList'
+import './_Dashboard.scss'
+
 export default class Dashboard extends Component {
     constructor(){
         super();
@@ -13,8 +15,7 @@ export default class Dashboard extends Component {
     render (){
 
         return (
-            <div>
-                <p>Dashboard</p>
+            <div className='dashboard'>
                 <ResidentList/>
             </div>
         )
