@@ -6,8 +6,9 @@ module.exports = {
         } else {res.sendStatus(401)};
     },
     sendUser : (req, res, next) => {
+        
         res.redirect(url.format({
-            pathname:'/dashboard',
+            pathname:'http://localhost:3000/#/dashboard',
             query:req.user.name
         }));
             
