@@ -1,6 +1,8 @@
-import React, {Component} from 'react'
-import ResidentList from '../ResidentList/ResidentList'
-import './_Dashboard.scss'
+import React, {Component} from 'react';
+import ResidentList from '../ResidentList/ResidentList';
+import './_Dashboard.scss';
+import Menu from '../Menu/Menu';
+import Grid from 'material-ui/Grid';
 
 export default class Dashboard extends Component {
     constructor(){
@@ -16,7 +18,10 @@ export default class Dashboard extends Component {
 
         return (
             <div className='dashboard'>
-                <ResidentList/>
+                <Menu/>
+                <Grid justify='center' alignItems='center' alignContent='center'>
+                    <ResidentList/>
+                </Grid>
             </div>
         )
     }

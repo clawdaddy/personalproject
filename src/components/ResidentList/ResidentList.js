@@ -2,8 +2,43 @@ import React, {Component} from 'react';
 import Resident from '../Resident/Resident';
 import ADLList from '../ADLList/ADLList';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import Paper from 'material-ui/Paper';
+import Card, { CardActions, CardContent } from 'material-ui/Card';
 
-export default class ResidentList extends Component {
+const styles = theme => ({ 
+    root: {
+        display:'flex',
+        flexWrap:'wrap',
+        justifyContent:'space-around',
+        overflow:'hidden',
+        backGroundColor: theme.palette.background.paper,
+        marginTop: 75,
+    },
+    gridList: {
+        flexWrap:'nowrap',
+        transform:'translateZ(0)',
+        height:100,
+        width:500,
+    },
+    title: {
+        color: theme.palette.primary.light,
+    },
+    titleBar: {
+        background:
+        'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, grba(0,0,0,0) 100%)'
+
+    },
+    paper: {
+
+    }
+});
+
+class ResidentList extends Component {
     constructor(){
         super();
         this.state = {
@@ -58,6 +93,56 @@ export default class ResidentList extends Component {
                     code:'full',
                     pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
                 },
+                {
+                    id:5,
+                    facilityID:0,
+                    firstName:"Torak, Lord of his domain",
+                    lastName: 'Merriwhether',
+                    age:65,
+                    diet:'Regular',
+                    code:'full',
+                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
+                },
+                {
+                    id:6,
+                    facilityID:0,
+                    firstName:"Torak, Lord of his domain",
+                    lastName: 'Merriwhether',
+                    age:65,
+                    diet:'Regular',
+                    code:'full',
+                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
+                },
+                {
+                    id:7,
+                    facilityID:0,
+                    firstName:"Torak, Lord of his domain",
+                    lastName: 'Merriwhether',
+                    age:65,
+                    diet:'Regular',
+                    code:'full',
+                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
+                },
+                {
+                    id:8,
+                    facilityID:0,
+                    firstName:"Torak, Lord of his domain",
+                    lastName: 'Merriwhether',
+                    age:65,
+                    diet:'Regular',
+                    code:'full',
+                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
+                },
+                {
+                    id:9,
+                    facilityID:0,
+                    firstName:"Torak, Lord of his domain",
+                    lastName: 'Merriwhether',
+                    age:65,
+                    diet:'Regular',
+                    code:'full',
+                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
+                },
             ],
             currentResidentID:0,
             
@@ -73,6 +158,7 @@ export default class ResidentList extends Component {
 
     render (){
         const { residents, currentResidentID } = this.state;
+        const { classes } = this.props;
         let resList = residents.map( (resident, i) => {
             return (
                 <Resident   resident = { resident }
@@ -86,14 +172,51 @@ export default class ResidentList extends Component {
         })
         
         return(
-            <div className='List'>
-                Resident List
-                { resList }
-                <Resident   resident = { currentResident }
-                            pickResidentFn = { this.pickResident }
-                            extraInfo = { true }/>
-                <ADLList/>
-            </div>
+            // <div className='List'>
+                
+                <div className = { classes.root } >
+                    <GridList className={ classes.gridList } 
+                    cols={ 5 }
+                    cellHeight='auto'>
+                        {residents.map( tile => (
+                            <GridListTile key = { tile.id } onClick={ () => this.pickResident(tile.id)}>
+                            <img src={ tile.pic } alt={ `${tile.firstName} ${tile.lastName}`} />
+                            <GridListTileBar
+                            title={ `${tile.firstName} ${tile.lastName}`}
+                            classes={{
+                                root: classes.titleBar,
+                                title: classes.title,
+                            }}
+                            actionIcon={
+                                <IconButton>
+                                    <StarBorderIcon className={ classes.title } />
+                                </IconButton>
+                            }
+                            />
+                            </GridListTile>
+                            
+                        )
+                        )}
+                    </GridList>
+                    <Resident   resident = { currentResident }
+                        pickResidentFn = { this.pickResident }
+                        extraInfo = { true }/>
+                </div>
+                
+            /* //     <p>Old Way</p>
+            //     Resident List
+            //     { resList }
+            //     <Resident   resident = { currentResident }
+            //                 pickResidentFn = { this.pickResident }
+            //                 extraInfo = { true }/>
+            //     <ADLList/>
+            // </div> */
         )
     }
 }
+
+ResidentList.PropTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(ResidentList)
