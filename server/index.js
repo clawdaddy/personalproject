@@ -59,7 +59,8 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 app.get('/dashboard', loginCtrl.authenticated, loginCtrl.sendUser)
 
 // RESIDENT LIST ENDPOINTS //
-app.get('/api/residentlist', )
+app.get('/api/facility', residentCtrl.getFacility)
+app.get('/api/residentlist', residentCtrl.getResidents)
 
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

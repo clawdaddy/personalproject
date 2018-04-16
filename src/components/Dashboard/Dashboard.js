@@ -3,6 +3,7 @@ import ResidentList from '../ResidentList/ResidentList';
 import './_Dashboard.scss';
 import Menu from '../Menu/Menu';
 import Grid from 'material-ui/Grid';
+import Facility from '../Facility/Facility';
 
 export default class Dashboard extends Component {
     constructor(){
@@ -19,6 +20,7 @@ export default class Dashboard extends Component {
         return (
             <div className='dashboard'>
                 <Menu/>
+                <Facility/>
                 <Grid justify='center' alignItems='center' alignContent='center'>
                     <ResidentList/>
                 </Grid>

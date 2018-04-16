@@ -11,6 +11,7 @@ import Paper from 'material-ui/Paper';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 
 
+
 //Resident list will get the list of residents and display them--it needs
 //their name, pic, and id. I'll hit the backend through
 //redux?
