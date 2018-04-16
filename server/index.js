@@ -4,7 +4,8 @@ const session = require('express-session');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const bodyParser = require('body-parser');
-const loginCtrl = require('./loginCtrl')
+const loginCtrl = require('./loginCtrl');
+const residentCtrl = require('./residentCtrl');
 require('dotenv').config();
 
 const app = express();
@@ -49,14 +50,16 @@ passport.deserializeUser( ( obj, done) => {
     done(null, obj)
 })
 
+// LOGIN ENDPOINTS //
 app.get('/auth', passport.authenticate('auth0'))
 app.get('/auth/callback', passport.authenticate('auth0', {
     successRedirect: '/dashboard', failureRedirect: '/auth', failureFlash: true
     })
 );
-
 app.get('/dashboard', loginCtrl.authenticated, loginCtrl.sendUser)
 
+// RESIDENT LIST ENDPOINTS //
+app.get('/api/residentlist', )
 
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

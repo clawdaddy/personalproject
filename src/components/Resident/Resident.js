@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './_Resident.scss'
-
+import Card, { CardActions, CardContent } from 'material-ui/Card';
+import { withStyles } from 'material-ui/styles';
+import PropTypes from 'prop-types';
 
 export default class Resident extends Component {
     // constructor(){
