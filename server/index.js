@@ -59,7 +59,7 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 app.get('/dashboard', loginCtrl.authenticated, loginCtrl.sendUser)
 
 // RESIDENT LIST ENDPOINTS //
-app.get('/api/facility', residentCtrl.getFacility)
+app.get('/api/facility/:facility', residentCtrl.getFacility)
 app.get('/api/residentlist', residentCtrl.getResidents)
 
 

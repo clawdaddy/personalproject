@@ -220,7 +220,7 @@ class ResidentList extends Component {
     }
 }
 
-ResidentList.PropTypes = {
+ResidentList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 

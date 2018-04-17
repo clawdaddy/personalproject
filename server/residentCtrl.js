@@ -4,9 +4,14 @@ module.exports = {
         
     },
     getFacility: (req, res, next) => {
-        req.app.get('db').facility().then( (facilityNames) => {
-            res.status(200).send(facilityNames)
-            .catch( () => res.status(500))
-        })
+        const { facility } = req.params;
+        console.log(facility)
+
+        req.app.get('db').get_facility([facility])
+        .then( facilityObj => {
+            console.log(facilityObj)
+            res.status(200).send( facilityObj )
+            
+        }).catch( () => res.status(500))
     }
 }
