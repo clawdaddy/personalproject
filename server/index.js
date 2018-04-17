@@ -60,7 +60,7 @@ app.get('/dashboard', loginCtrl.authenticated, loginCtrl.sendUser)
 
 // RESIDENT LIST ENDPOINTS //
 app.get('/api/facility/:facility', residentCtrl.getFacility)
-app.get('/api/residentlist', residentCtrl.getResidents)
+app.post('/api/group', residentCtrl.getResidents)
 
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

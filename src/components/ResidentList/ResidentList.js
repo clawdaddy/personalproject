@@ -9,12 +9,15 @@ import IconButton from 'material-ui/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Paper from 'material-ui/Paper';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
-
+import { connect } from 'react-redux';
+import { selectResident, updateResidentList } from '../../ducks/reducer';
+import axios from 'axios';
 
 
 //Resident list will get the list of residents and display them--it needs
 //their name, pic, and id. I'll hit the backend through
-//redux?
+//redux -- from here I need to get the current resident ID to redux, also something to indicate a resident has been picked
+//axios calls made from redux??? not a bad idea if I put in other features that need the residents
 const styles = theme => ({ 
     root: {
         display:'flex',
@@ -154,24 +157,46 @@ class ResidentList extends Component {
         }
         this.pickResident = this.pickResident.bind(this);
     }
+
+    componentDidUpdate (prevProps, prevState, snapshot){
+        if (prevProps === this.props){
+            null
+        } else {
+            const { group, selectResident, updateResidentList } = this.props;
+            const { id } = this.props.facility;
+            console.log(group)
+            if (group){
+                axios.post(`/api/group`, {group, id}).then( response => {
+                    console.log(response.data)
+                    updateResidentList( response.data )
+                })
+            }
+        }
+    }
+
+
     pickResident(currentResidentID){
-        this.setState({
-            currentResidentID: currentResidentID,
+        
+
+        this.props.selectResident(currentResidentID)
+        // this.setState({
+        //     currentResidentID: currentResidentID,
             
-        })
+        // })
     }
 
     render (){
         const { residents, currentResidentID } = this.state;
-        const { classes } = this.props;
-        let resList = residents.map( (resident, i) => {
-            return (
-                <Resident   resident = { resident }
-                            key = { i }
-                            pickResidentFn = {this.pickResident}
-                />
-            )
-        })
+        const { classes, residentList, group } = this.props;
+        console.log(group);
+        // let resList = residents.map( (resident, i) => {
+        //     return (
+        //         <Resident   resident = { resident }
+        //                     key = { i }
+        //                     pickResidentFn = {this.pickResident}
+        //         />
+        //     )
+        // })
         let currentResident = _.find(residents, (resident) => {
                 return resident.id === currentResidentID
         })
@@ -183,7 +208,7 @@ class ResidentList extends Component {
                     <GridList className={ classes.gridList } 
                     cols={ 5 }
                     cellHeight='auto'>
-                        {residents.map( tile => (
+                        {residentList.map( tile => (
                             <GridListTile key = { tile.id } onClick={ () => this.pickResident(tile.id)}>
                             <img src={ tile.pic } alt={ `${tile.firstName} ${tile.lastName}`} />
                             <GridListTileBar
@@ -217,6 +242,7 @@ class ResidentList extends Component {
             //     <ADLList/>
             // </div> */
         )
+    
     }
 }
 
@@ -224,4 +250,12 @@ ResidentList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ResidentList)
+function mapStateToProps ( state ){
+    return {
+        group: state.group,
+        facility: state.facility,
+        residentList: state.residentList
+    }
+}
+
+export default connect(mapStateToProps, { selectResident, updateResidentList }) (withStyles(styles)(ResidentList))

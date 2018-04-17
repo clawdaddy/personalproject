@@ -8,12 +8,14 @@ import Select from 'material-ui/Select';
 import Input, { InputLabel } from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import { connect } from 'react-redux';
+import { selectFacility, selectGroup } from '../../ducks/reducer';
 
 const styles = theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginTop: 300,
+        
     },
     textField: {
         marginLeft: theme.spacing.unit,
@@ -42,6 +44,7 @@ class Facility extends Component{
             search: '',
             group:'group1',
         }
+    
     }
     handleChange( event ){
         this.setState({
@@ -52,14 +55,14 @@ class Facility extends Component{
     getFacility () {
         const { search } = this.state;
         axios.get(`/api/facility/${search}`).then( response => {
-            
-            this.setState({facility: response.data[0]})
+            this.props.selectFacility(response.data[0])
+            // this.setState({facility: response.data[0]})
         })
     }
     render(){
-        const { classes } = this.props;
-        const { caregroups } = this.state.facility;
-        console.log(caregroups);
+        const { classes, facility, group, facility: {caregroups} } = this.props;
+        // const { caregroups } = this.state.facility;
+        console.log(group);
         
         return (
             <div>
@@ -85,19 +88,19 @@ class Facility extends Component{
                         <InputLabel htmlFor='group-select'>Group</InputLabel>
                         <Select 
                             
-                            value={ this.state.group }
-                            onChange = {(e) => this.handleChange(e)}
+                            value={ group }
+                            onChange = {(e) => this.props.selectGroup(e.target.value)}
                             inputProps={{
                                 name: 'group',
                                 id: 'group-select'
                             }}
                         >
-                            {caregroups.map( group => 
+                            {caregroups.map( groupOption => 
                                 ( <MenuItem 
-                                    value={group}
-                                    key={group}
+                                    value={groupOption}
+                                    key={groupOption}
                                     > 
-                                    {group} 
+                                    {groupOption} 
                                 </MenuItem> )
                                 )
                             }
@@ -115,4 +118,11 @@ class Facility extends Component{
 Facility.propTypes = {
     classes: PropTypes.object.isRequired
 };
-export default withStyles(styles)(Facility)
+
+function mapStateToProps ( state ){
+    return {
+        facility: state.facility,
+        group: state.group
+    }
+}
+export default connect(mapStateToProps, {selectFacility, selectGroup}) (withStyles(styles)(Facility));

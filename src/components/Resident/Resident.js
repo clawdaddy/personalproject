@@ -3,8 +3,9 @@ import './_Resident.scss'
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class Resident extends Component {
+class Resident extends Component {
     // constructor(){
     //     super();
     //     this.state = {
@@ -31,3 +32,11 @@ export default class Resident extends Component {
         )
     }
 }
+
+function mapStateToProps ( state ){
+    return {
+        selectedResidentID: state.selectedResidentID
+    }
+}
+
+export default connect(mapStateToProps, null)(Resident)

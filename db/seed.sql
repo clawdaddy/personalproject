@@ -32,9 +32,13 @@ timeOfadl TIMESTAMPTZ
 );
 
 insert into facility
-(caregroups)
+(name, caregroups)
 values
-('{"100 hall", "200 hall", "300 hall"}')
+('test facility', '{"100 hall", "200 hall", "300 hall"}');
+insert into facility
+(name, caregroups)
+values
+('The Village', '{"first floor", "second floor"}');
 
 -- updating one group, or adding a group (if adding put in an array number that doesn't exist yet)
 -- update facility set caregroups[1] = 'example group 3'
