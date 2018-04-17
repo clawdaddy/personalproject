@@ -19,9 +19,10 @@ export default class Dashboard extends Component {
 
         return (
             <div className='dashboard'>
-                <Menu/>
-                <Facility/>
+                
                 <Grid justify='center' alignItems='center' alignContent='center'>
+                    <Menu/>
+                    <Facility/>
                     <ResidentList/>
                 </Grid>
             </div>
