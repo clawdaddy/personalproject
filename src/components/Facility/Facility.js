@@ -9,7 +9,7 @@ import Input, { InputLabel } from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
-import { selectFacility, selectGroup } from '../../ducks/reducer';
+import { selectFacility, selectGroup, showResidentCard } from '../../ducks/reducer';
 
 const styles = theme => ({
     root: {
@@ -89,7 +89,11 @@ class Facility extends Component{
                         <Select 
                             
                             value={ group }
-                            onChange = {(e) => this.props.selectGroup(e.target.value)}
+                            onChange = {(e) => {
+                                this.props.selectGroup(e.target.value)
+                                this.props.showResidentCard(false)
+                                }
+                            }
                             inputProps={{
                                 name: 'group',
                                 id: 'group-select'
@@ -122,7 +126,7 @@ Facility.propTypes = {
 function mapStateToProps ( state ){
     return {
         facility: state.facility,
-        group: state.group
+        group: state.group,
     }
 }
-export default connect(mapStateToProps, {selectFacility, selectGroup}) (withStyles(styles)(Facility));
+export default connect(mapStateToProps, {selectFacility, selectGroup, showResidentCard}) (withStyles(styles)(Facility));

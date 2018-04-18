@@ -9,7 +9,8 @@ const initialState = {
         caregroups:[]
     },
     group: '',
-    residentList:[]
+    residentList:[],
+    showResident:false
     
 }
 //declare names of action variables//
@@ -19,7 +20,7 @@ const CURRENT_RESIDENT = 'CURRENT_RESIDENT';
 const GROUP_NAME = 'GROUP_NAME';
 const FACILITY = 'FACILITY';
 const RESIDENT_LIST = 'RESIDENT_LIST';
-
+const SHOW_RESIDENT = 'SHOW_RESIDENT';
 
 export function selectShift (shift){
     return {
@@ -62,6 +63,12 @@ export function updateResidentList ( list ){
         payload: list
     }
 }
+export function showResidentCard ( boolean ){
+    return {
+        type:SHOW_RESIDENT,
+        payload: boolean
+    }
+}
 
 export default function reducer ( state = initialState, action) {
     switch (action.type){
@@ -82,6 +89,9 @@ export default function reducer ( state = initialState, action) {
         
         case RESIDENT_LIST:
             return Object.assign( {}, state, { residentList: action.payload })
+        
+        case SHOW_RESIDENT:
+            return Object.assign( {}, state, { showResident: action.payload })
 
         default: return state;
     }

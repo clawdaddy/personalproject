@@ -10,7 +10,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Paper from 'material-ui/Paper';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import { connect } from 'react-redux';
-import { selectResident, updateResidentList } from '../../ducks/reducer';
+import { selectResident, updateResidentList, showResidentCard } from '../../ducks/reducer';
 import axios from 'axios';
 
 
@@ -49,117 +49,12 @@ const styles = theme => ({
 class ResidentList extends Component {
     constructor(){
         super();
-        this.state = {
-            residents:[
-                {
-                    id:0,
-                    facilityID:0,
-                    firstName:'Sue Ellen',
-                    lastName: 'Merriwhether',
-                    age:68,
-                    diet:'Puree',
-                    code:'full',
-                    pic:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Quentin_Matsys_-_A_Grotesque_old_woman.jpg/182px-Quentin_Matsys_-_A_Grotesque_old_woman.jpg'
-                },
-                {
-                    id:1,
-                    facilityID:0,
-                    firstName:'Bobby Sue',
-                    lastName: 'Merriwhether',
-                    age:89,
-                    diet:'Chopped',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Katharine_Hepburn_promo_pic.jpg/191px-Katharine_Hepburn_promo_pic.jpg'
-                },
-                {
-                    id:2,
-                    facilityID:0,
-                    firstName:'Ricky Bobby',
-                    lastName: 'Merriwhether',
-                    age:72,
-                    diet:'NPO',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Charlie_Chaplin.jpg/192px-Charlie_Chaplin.jpg'
-                },
-                {
-                    id:3,
-                    facilityID:0,
-                    firstName:"'lil Ricky",
-                    lastName: 'Merriwhether',
-                    age:63,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Plato-raphael.jpg'
-                },
-                {
-                    id:4,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-                {
-                    id:5,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-                {
-                    id:6,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-                {
-                    id:7,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-                {
-                    id:8,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-                {
-                    id:9,
-                    facilityID:0,
-                    firstName:"Torak, Lord of his domain",
-                    lastName: 'Merriwhether',
-                    age:65,
-                    diet:'Regular',
-                    code:'full',
-                    pic: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Chimpanzee_selfie.jpg'
-                },
-            ],
-            currentResidentID:0,
-            
-        }
+        
         this.pickResident = this.pickResident.bind(this);
     }
 
     componentDidUpdate (prevProps, prevState, snapshot){
-        if (prevProps === this.props){
+        if (prevProps.group === this.props.group){
             null
         } else {
             const { group, selectResident, updateResidentList } = this.props;
@@ -176,9 +71,8 @@ class ResidentList extends Component {
 
 
     pickResident(currentResidentID){
-        
-
-        this.props.selectResident(currentResidentID)
+        this.props.selectResident(currentResidentID);
+        this.props.showResidentCard(true);
         // this.setState({
         //     currentResidentID: currentResidentID,
             
@@ -186,9 +80,9 @@ class ResidentList extends Component {
     }
 
     render (){
-        const { residents, currentResidentID } = this.state;
-        const { classes, residentList, group } = this.props;
-        console.log(group);
+        
+        const { classes, residentList, group, selectedResidentID, showResident } = this.props;
+        console.log(selectedResidentID);
         // let resList = residents.map( (resident, i) => {
         //     return (
         //         <Resident   resident = { resident }
@@ -197,9 +91,18 @@ class ResidentList extends Component {
         //         />
         //     )
         // })
-        let currentResident = _.find(residents, (resident) => {
-                return resident.id === currentResidentID
-        })
+        
+        function displayResident (){
+            if (selectedResidentID && showResident === true){
+                let currentResident = _.find(residentList, (resident) => {
+                    return resident.id === selectedResidentID
+                })
+                return (
+                    <Resident   resident = { currentResident }
+                        extraInfo = { true }/>
+                )
+            }
+        }
         
         return(
             // <div className='List'>
@@ -212,7 +115,7 @@ class ResidentList extends Component {
                             <GridListTile key = { tile.id } onClick={ () => this.pickResident(tile.id)}>
                             <img src={ tile.pic } alt={ `${tile.firstName} ${tile.lastName}`} />
                             <GridListTileBar
-                            title={ `${tile.firstName} ${tile.lastName}`}
+                            title={ `${tile.firstname} ${tile.lastname}`}
                             classes={{
                                 root: classes.titleBar,
                                 title: classes.title,
@@ -228,9 +131,7 @@ class ResidentList extends Component {
                         )
                         )}
                     </GridList>
-                    <Resident   resident = { currentResident }
-                        pickResidentFn = { this.pickResident }
-                        extraInfo = { true }/>
+                    {displayResident()}
                 </div>
                 
             /* //     <p>Old Way</p>
@@ -254,8 +155,10 @@ function mapStateToProps ( state ){
     return {
         group: state.group,
         facility: state.facility,
-        residentList: state.residentList
+        residentList: state.residentList,
+        selectedResidentID: state.selectedResidentID,
+        showResident: state.showResident
     }
 }
 
-export default connect(mapStateToProps, { selectResident, updateResidentList }) (withStyles(styles)(ResidentList))
+export default connect(mapStateToProps, { selectResident, updateResidentList, showResidentCard }) (withStyles(styles)(ResidentList))
