@@ -165,6 +165,12 @@ class ADLList extends Component {
         this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );
     }
+
+    componentDidMount(){
+        axios.get('/api/adllist').then( response => {
+            this.setState({list: response.data})
+        })
+    }
     handleClick ( ADLSchemaID ){
         this.setState({currentADL: ADLSchemaID})
     }

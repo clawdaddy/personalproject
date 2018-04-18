@@ -26,8 +26,21 @@ module.exports = {
                 choicesID: 1,
             },
             tertiary:{
-                explain: "type of bathing",
+                explain: "Type of Bathing",
                 choicesID: 2,
+            }
+        },
+        {
+            ADLSchemaID:2,
+            ADLName: "Transfers",
+            explanation: "How the resident moves to and from bed, chair, wheelchair, standing",
+            primary: {
+                explain: "Self Performance",
+                choicesID:0,
+            },
+            secondary: {
+                explain: "Support Provided",
+                choicesID:1,
             }
         }
     ],

@@ -40,8 +40,9 @@ passport.use( new Auth0Strategy ({
     callbackURL: CALLBACK_URL,
     scope: 'openid profile'
 }, function( accessToken, refreshToken, extraParams, profile, done) {
-        const user={
-            authzeroid: profile_id,
+    console.log(profile)    
+    const user={
+            authzeroid: profile.id,
             firstname: profile._json.given_name,
             lastname: profile._json.family_name,
         }
@@ -58,7 +59,7 @@ passport.serializeUser( ( user, done ) => {
 passport.deserializeUser( ( user, done) => {
     //look through database to see if id is there, if it isn't, add it
     let match = null
-    app.get('db').get_caregivers.then( result => 
+    app.get('db').get_caregivers().then( result => 
         {
             match = result.find(caregiver => caregiver.authzeroid === user.authzeroid )
         }
@@ -72,7 +73,7 @@ passport.deserializeUser( ( user, done) => {
 // LOGIN ENDPOINTS //
 
 app.get('/login', passport.authenticate('auth0', {
-    successRedirect: '/dashboard', failureRedirect: '/', failureFlash: true
+    successRedirect: 'http://localhost:3000/#/dashboard', failureRedirect: '/', failureFlash: true
     })
 );
 
