@@ -3,7 +3,11 @@ import ADLButton from '../ADLButton/ADLButton';
 import ADL from '../ADL/ADL';
 import SavedADL from '../SavedADL/SavedADL'
 import _ from 'lodash';
-export default class ADLList extends Component {
+import axios from 'axios';
+import { connect } from 'react-redux';
+
+
+class ADLList extends Component {
     constructor(){
         super();
         this.state = {
@@ -193,21 +197,39 @@ export default class ADLList extends Component {
             )
         }
     }
-    render (){
-        let newList = this.state.list.map( (adl, i) => {
-            return <ADLButton ADLName = { adl.ADLName }
-                        key = {i}
-                        handleClickFn = { this.handleClick }
-                        ADLSchemaID = { adl.ADLSchemaID }/>
-        })
 
+    
+    render (){
+        const { showadl } = this.props;
+        const { list } = this.state;
+        const { handleClick } = this;
+        function displayadllist(){
+            if ( showadl === true ){
+                let newList = list.map( (adl, i) => {
+                    return <ADLButton ADLName = { adl.ADLName }
+                                key = {i}
+                                handleClickFn = { handleClick }
+                                ADLSchemaID = { adl.ADLSchemaID }/>
+                })
+                return newList;
+            }
+        }
         return (
             <div>
                 
-                { newList }
+                { displayadllist()
+                }
                 { this.chosenADL() }
                 
             </div>
         )
     }
 }
+
+function mapStateToProps( state ){
+    return {
+        showadl: state.showadl
+    }
+}
+
+export default connect(mapStateToProps, null )(ADLList)

@@ -10,7 +10,8 @@ const initialState = {
     },
     group: '',
     residentList:[],
-    showResident:false
+    showResident:false,
+    showadl: false,
     
 }
 //declare names of action variables//
@@ -21,6 +22,7 @@ const GROUP_NAME = 'GROUP_NAME';
 const FACILITY = 'FACILITY';
 const RESIDENT_LIST = 'RESIDENT_LIST';
 const SHOW_RESIDENT = 'SHOW_RESIDENT';
+const SHOW_ADL = 'SHOW_ADL';
 
 export function selectShift (shift){
     return {
@@ -69,6 +71,12 @@ export function showResidentCard ( boolean ){
         payload: boolean
     }
 }
+export function showadllist ( boolean ){
+    return {
+        type:SHOW_ADL,
+        payload:boolean
+    }
+}
 
 export default function reducer ( state = initialState, action) {
     switch (action.type){
@@ -92,6 +100,9 @@ export default function reducer ( state = initialState, action) {
         
         case SHOW_RESIDENT:
             return Object.assign( {}, state, { showResident: action.payload })
+
+        case SHOW_ADL:
+            return Object.assign( {}, state, { showadl: action.payload})
 
         default: return state;
     }

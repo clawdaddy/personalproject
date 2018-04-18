@@ -6,6 +6,7 @@ const Auth0Strategy = require('passport-auth0');
 const bodyParser = require('body-parser');
 const loginCtrl = require('./loginCtrl');
 const residentCtrl = require('./residentCtrl');
+const adlctrl = require('./adlCtrl');
 require('dotenv').config();
 
 const app = express();
@@ -39,28 +40,55 @@ passport.use( new Auth0Strategy ({
     callbackURL: CALLBACK_URL,
     scope: 'openid profile'
 }, function( accessToken, refreshToken, extraParams, profile, done) {
-    done(null, profile);
+        const user={
+            authzeroid: profile_id,
+            firstname: profile._json.given_name,
+            lastname: profile._json.family_name,
+        }
+   done(null, user);
 }))
 
+
 passport.serializeUser( ( user, done ) => {
-    done( null, { userID: user.id, email: user._json.email, name:user._json.name})
+    done( null, user)
 })
 
-passport.deserializeUser( ( obj, done) => {
-    done(null, obj)
-})
+//deserialize -- can run through user table and see if the authid is in my user table--
+//find user by id
+passport.deserializeUser( ( user, done) => {
+    //look through database to see if id is there, if it isn't, add it
+    let match = null
+    app.get('db').get_caregivers.then( result => 
+        {
+            match = result.find(caregiver => caregiver.authzeroid === user.authzeroid )
+        }
+    )
+    if (match) return done(null, match)
+    app.get('db').add_caregiver([user.authzeroid, user.firstname, user.lastname]).then(
+        () => done(null, user))
+    }
+)
 
 // LOGIN ENDPOINTS //
-app.get('/auth', passport.authenticate('auth0'))
-app.get('/auth/callback', passport.authenticate('auth0', {
-    successRedirect: '/dashboard', failureRedirect: '/auth', failureFlash: true
+
+app.get('/login', passport.authenticate('auth0', {
+    successRedirect: '/dashboard', failureRedirect: '/', failureFlash: true
     })
 );
-app.get('/dashboard', loginCtrl.authenticated, loginCtrl.sendUser)
+
+app.get('/checklogin', loginCtrl.checkLoggedIn)
+app.get('/logout', (req, res, next ) => {
+    req.session.destroy( () => {
+    res.sendStatus(200)
+    }
+)})
+
 
 // RESIDENT LIST ENDPOINTS //
 app.get('/api/facility/:facility', residentCtrl.getFacility)
 app.post('/api/group', residentCtrl.getResidents)
 
+// ADL endpoints //
+app.get('/api/adllist', adlctrl.getadlSchema)
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

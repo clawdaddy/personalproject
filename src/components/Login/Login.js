@@ -10,7 +10,7 @@ function Login () {
         return (
             <div className = 'login'>
                 <h1>Oh CNAp</h1>
-                <a href = 'http://localhost:3005/auth'>
+                <a href = 'http://localhost:3005/login'>
                     <Button variant='raised' >
                         Login
                     </Button>

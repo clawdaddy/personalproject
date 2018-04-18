@@ -10,7 +10,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Paper from 'material-ui/Paper';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import { connect } from 'react-redux';
-import { selectResident, updateResidentList, showResidentCard } from '../../ducks/reducer';
+import { selectResident, updateResidentList, showResidentCard, showadllist } from '../../ducks/reducer';
 import axios from 'axios';
 
 
@@ -25,7 +25,7 @@ const styles = theme => ({
         justifyContent:'space-around',
         overflow:'hidden',
         backGroundColor: theme.palette.background.paper,
-        marginTop: 75,
+        
     },
     gridList: {
         flexWrap:'nowrap',
@@ -62,7 +62,7 @@ class ResidentList extends Component {
             console.log(group)
             if (group){
                 axios.post(`/api/group`, {group, id}).then( response => {
-                    console.log(response.data)
+                    
                     updateResidentList( response.data )
                 })
             }
@@ -73,6 +73,7 @@ class ResidentList extends Component {
     pickResident(currentResidentID){
         this.props.selectResident(currentResidentID);
         this.props.showResidentCard(true);
+        this.props.showadllist(true);
         // this.setState({
         //     currentResidentID: currentResidentID,
             
@@ -99,7 +100,7 @@ class ResidentList extends Component {
                 })
                 return (
                     <Resident   resident = { currentResident }
-                        extraInfo = { true }/>
+                        />
                 )
             }
         }
@@ -161,4 +162,4 @@ function mapStateToProps ( state ){
     }
 }
 
-export default connect(mapStateToProps, { selectResident, updateResidentList, showResidentCard }) (withStyles(styles)(ResidentList))
+export default connect(mapStateToProps, { selectResident, updateResidentList, showResidentCard, showadllist }) (withStyles(styles)(ResidentList))
