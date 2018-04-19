@@ -9,28 +9,28 @@ export default function ADL( props ){
     //         adlChoice:
     //     }
     // }
-    const { primaryChoices, secondaryChoices, tertiaryChoices, explanation, primaryExplain, secondaryExplain, tertiaryExplain, ADLSchemaID } = props.displayADL;
+    const { primary, secondary, tertiary, explanation, ADLSchemaID } = props.displayADL;
     const { handleValueFn } = props;
     let primaryButtons = [];
     let secondaryButtons = [];
     let tertiaryButtons = [];
     
     
-    function displayButtons (choiceSet, choiceExplain, choiceValue) {
+    function displayButtons ( choiceSet ) {
         if (choiceSet){
-            let choiceButtons = choiceSet.map( (choice, i) => {
+            let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (
                     <button key = { i }
-                    onClick = { () => { handleValueFn( choice.value, choice.ADLSchemaID, moment().format('Do MMMM YYYY, h:mm:ss a'));
+                    onClick = { () => { handleValueFn( choiceSet, choice.value, ADLSchemaID, moment().format('Do MMMM YYYY, h:mm:ss a'));
                     }}>{ choice.choice }
                     </button>
                 )
             });
             return (
             <div>
-                <p>{ choiceExplain }</p>
+                <p>{ choiceSet.explain }</p>  
                 { choiceButtons }
-                <SavedADL/>
+                <SavedADL choiceSet = { choiceSet }/>
             </div>)
 
         } else {
@@ -40,9 +40,9 @@ export default function ADL( props ){
     return (
         <div>
             
-                { displayButtons( primaryChoices, primaryExplain )}
-                { displayButtons( secondaryChoices, secondaryExplain )}
-                { displayButtons( tertiaryChoices, tertiaryExplain )}
+                { displayButtons( primary )}
+                { displayButtons( secondary )}
+                { displayButtons( tertiary )}
         </div>
     )
 }
