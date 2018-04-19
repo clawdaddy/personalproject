@@ -22,6 +22,7 @@ const { SERVER_PORT,
 
 } = process.env;
 //TOP-LEVEL MIDDLEWARE
+app.use(express.static(`${__dirname}/../build`))
 app.use(bodyParser.json());
 massive( DATABASE_CONNECTION ).then( (db) => {
     app.set('db', db)
