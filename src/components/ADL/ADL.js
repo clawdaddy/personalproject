@@ -28,7 +28,7 @@ export default function ADL( props ){
             });
             return (
             <div>
-                <p>{ choiceSet.explain }</p>
+                <p>{ choiceSet.explain }</p>  
                 { choiceButtons }
                 <SavedADL choiceSet = { choiceSet }/>
             </div>)

@@ -9,12 +9,20 @@ module.exports = {
         let secondaryObject = null;
         let tertiaryObject = null;
         const adlList = adlSchema.list.map( adl => {
+            primaryChoices = null;
+            secondaryChoices = null;
+            tertiaryChoices = null;
+            primaryObject = null;
+            secondaryObject = null;
+            tertiaryObject = null;
+
+            
             primaryChoices = adlSchema.choiceIDs.filter( choice => {
-                console.log('hit prim', choice)
+                
                 return choice.ID === adl.primary.choicesID
                 }
             )
-            console.log(primaryChoices)
+            
             primaryObject = {
                 choices:primaryChoices[0].choices,
                 explain:adl.primary.explain,
@@ -44,9 +52,14 @@ module.exports = {
                     selected: -1,
                     timeStamp: null
                 }
+            } else {
+                tertiaryObject = null
             }
-            
-
+            console.log('whole adl: ',adl)
+            console.log('adlName: ',adl.ADLName)
+            console.log('primary: ',primaryObject)
+            console.log( 'secondary: ',secondaryObject)
+            console.log('tertiary: ', tertiaryObject)
         return (
             Object.assign({}, adl, { primary:primaryObject, 
             secondary:secondaryObject, tertiary:tertiaryObject })

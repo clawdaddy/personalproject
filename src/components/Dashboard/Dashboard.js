@@ -31,15 +31,15 @@ export default class Dashboard extends Component {
 
         return (
             <div className='dashboard'>
-                {/* {this.state.user.authzeroid
-                ? */}
+                {this.state.user.authzeroid
+                ?
                 <Grid justify='center' alignItems='center' alignContent='center'>
                     <Menu/>
                     <Facility/>
                     <ResidentList/>
                     <ADLList/>
                 </Grid>
-                {/* :<div>Unauthorized</div>} */}
+                :<div>Unauthorized</div>}
             </div>
         )
     }
