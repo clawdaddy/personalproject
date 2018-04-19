@@ -16,7 +16,9 @@ const { SERVER_PORT,
     DOMAIN,
     CLIENT_ID,
     CLIENT_SECRET,
-    CALLBACK_URL
+    CALLBACK_URL,
+    SUCCESS_REDIRECT,
+    FAILURE_REDIRECT
 
 } = process.env;
 //TOP-LEVEL MIDDLEWARE
@@ -73,7 +75,7 @@ passport.deserializeUser( ( user, done) => {
 // LOGIN ENDPOINTS //
 
 app.get('/login', passport.authenticate('auth0', {
-    successRedirect: 'http://localhost:3000/#/dashboard', failureRedirect: '/', failureFlash: true
+    successRedirect: SUCCESS_REDIRECT, failureRedirect: FAILURE_REDIRECT, failureFlash: true
     })
 );
 
