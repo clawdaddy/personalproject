@@ -13,8 +13,8 @@ class ADLList extends Component {
         this.state = {
             // list:[
             //     {
-            //         ADLSchemaID:0,
-            //         ADLName:"Bed Mobility",
+            //         id:0,
+            //         name:"Bed Mobility",
             //         residentID:0,
             //         explanation:"How resident adjusts self in bed",
             //         primary: {
@@ -77,9 +77,9 @@ class ADLList extends Component {
             //         }
             //     },
             //     {
-            //         ADLSchemaID:1,
+            //         id:1,
             //         residentID:0,
-            //         ADLName: "Bathing",
+            //         name: "Bathing",
             //         explanation:"How resident bathes",
             //         primary:{
             //             explain:"Self Performance",
@@ -169,17 +169,19 @@ class ADLList extends Component {
     componentDidMount(){
         axios.get('/api/adllist').then( response => {
             this.setState({list: response.data})
+            console.log(response.data)
+            
         })
     }
-    handleClick ( ADLSchemaID ){
-        this.setState({currentADL: ADLSchemaID})
+    handleClick ( id ){
+        this.setState({currentADL: id})
     }
 
     handleValue ( choiceSet, choiceValue, choiceID, timeStamp ){
         const { list } = this.state;
         let newList = [...list];
         let adlIndex = _.findIndex( newList, ( adl ) => {
-            return adl.ADLSchemaID === choiceID ;
+            return adl.id === choiceID ;
         })
         let key = _.findKey(newList[adlIndex], ( property ) => {
             return property.explain === choiceSet.explain;
@@ -193,7 +195,7 @@ class ADLList extends Component {
     chosenADL (){
         const { list, currentADL } = this.state;
         if ( currentADL >= 0 ){
-            let displayADL = _.find(list, ( element ) => { return element.ADLSchemaID === currentADL } )
+            let displayADL = _.find(list, ( element ) => { return element.id === currentADL } )
             return (
                 <div>
                     <ADL displayADL = {displayADL} 
@@ -212,10 +214,10 @@ class ADLList extends Component {
         function displayadllist(){
             if ( showadl === true ){
                 let newList = list.map( (adl, i) => {
-                    return <ADLButton ADLName = { adl.ADLName }
+                    return <ADLButton name = { adl.name }
                                 key = {i}
                                 handleClickFn = { handleClick }
-                                ADLSchemaID = { adl.ADLSchemaID }/>
+                                id = { adl.id }/>
                 })
                 return newList;
             }

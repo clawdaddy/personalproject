@@ -1,71 +1,71 @@
-const adlSchema = require('./adlschema');
+
+
+// const adlSchema = require('./adlschema');
 
 module.exports = {
     getadlSchema: (req, res, next) => {
-        let primaryChoices = null;
-        let secondaryChoices = null;
-        let tertiaryChoices = null;
-        let primaryObject = null;
-        let secondaryObject = null;
-        let tertiaryObject = null;
-        const adlList = adlSchema.list.map( adl => {
-            primaryChoices = null;
-            secondaryChoices = null;
-            tertiaryChoices = null;
-            primaryObject = null;
-            secondaryObject = null;
-            tertiaryObject = null;
-
+        let adlList = null;
+        let primaryResponse = null;
+        let secondaryResponse = null;
+        let tertiaryResponse = null;
+        let secondarychoices = [];
+        let tertiarychoices = [];
+        req.app.get('db').get_adl_schema().then( response =>{
             
-            primaryChoices = adlSchema.choiceIDs.filter( choice => {
-                
-                return choice.ID === adl.primary.choicesID
-                }
-            )
-            
-            primaryObject = {
-                choices:primaryChoices[0].choices,
-                explain:adl.primary.explain,
-                selected: -1,
-                timeStamp: null
-
-            }
-            if (adl.secondary){
-                secondaryChoices = adlSchema.choiceIDs.filter( choice => {
-                    return choice.ID === adl.secondary.choicesID
-                })
-                secondaryObject = {
-                    choices:secondaryChoices[0].choices,
-                    explain:adl.secondary.explain,
-                    selected: -1,
-                    timeStamp: null
-                }
-        
-            }
-            if (adl.tertiary){
-                tertiaryChoices = adlSchema.choiceIDs.filter( choice => {
-                    return choice.ID === adl.tertiary.choicesID
-                })
-                tertiaryObject = {
-                    choices:tertiaryChoices[0].choices,
-                    explain:adl.tertiary.explain,
-                    selected: -1,
-                    timeStamp: null
-                }
-            } else {
-                tertiaryObject = null
-            }
-            console.log('whole adl: ',adl)
-            console.log('adlName: ',adl.ADLName)
-            console.log('primary: ',primaryObject)
-            console.log( 'secondary: ',secondaryObject)
-            console.log('tertiary: ', tertiaryObject)
-        return (
-            Object.assign({}, adl, { primary:primaryObject, 
-            secondary:secondaryObject, tertiary:tertiaryObject })
-        )
+            //response comes back as an array with objects in it, each object has an id, name, explanation, primarychoice, secondarychoice, and tertiarychoice. The secondary and tertiary choices can be null.
+            let adlList = []
+            response.map( (adl, ind, array) => {
+                let messengeradl = null
+                let messengeradl2 = null
+                let messengeradl3 = null
+                req.app.get('db').get_primary([adl.id]).then( choiceResponse => {
+                    
+                    //choiceResponse comes back as choiceexplanation, choices[array of strings], numbervalue[array of integers]
+                    primaryResponse = Object.assign({},choiceResponse[0]);
+                    let primarychoices = primaryResponse.choices.map( (choice, i, arr) => {
+                        return Object.assign( {}, {choice:arr[i], value:primaryResponse.numbervalue[i]})
+                    })
+                    messengeradl = Object.assign({}, adl, { primary:{
+                        explain:primaryResponse.choiceexplanation,
+                        choices:primarychoices,
+                        selected: -1,
+                        timeStamp: null
+                    }})
+                        req.app.get('db').get_secondary([adl.id]).then( choiceResponse => {
+                            secondaryResponse = Object.assign({}, choiceResponse[0])
+                            if (secondaryResponse.choices){
+                                secondarychoices = secondaryResponse.choices.map( (choice, i, arr) => {
+                                    return Object.assign( {}, {choice:arr[i], value:secondaryResponse.numbervalue[i]})
+                                })
+                            } else secondarychoices = []
+                            messengeradl2 = Object.assign({}, messengeradl, { secondary:{
+                                explain:secondaryResponse.choiceexplanation,
+                                choices:secondarychoices,
+                                selected: -1,
+                                timeStamp: null
+                            }})
+                            req.app.get('db').get_tertiary([adl.id]).then( choiceResponse => {
+                                tertiaryResponse = Object.assign({}, choiceResponse[0])
+                                if (tertiaryResponse.choices){
+                                    tertiarychoices = tertiaryResponse.choices.map( (choice, i, arr) => {
+                                        return Object.assign( {}, {choice:arr[i], value:tertiaryResponse.numbervalue[i]})
+                                    })
+                                } else tertiarychoices = []
+                                messengeradl3 = Object.assign({},messengeradl2, { tertiary:{
+                                    explain:tertiaryResponse.choiceexplanation,
+                                    choices:tertiarychoices,
+                                    selected: -1,
+                                    timeStamp: null
+                                }})
+                                adlList.push(messengeradl3)
+                                if (adlList.length === array.length){
+                                    res.status(200).send(adlList)  
+                                }
+                            });
+                        });
+                });   
+            })
         })
-        res.status(200).send(adlList)
     },
     getadlChoices: (req, res, next) => {    }
 }

@@ -9,7 +9,7 @@ export default function ADL( props ){
     //         adlChoice:
     //     }
     // }
-    const { primary, secondary, tertiary, explanation, ADLSchemaID } = props.displayADL;
+    const { primary, secondary, tertiary, explanation, id } = props.displayADL;
     const { handleValueFn } = props;
     let primaryButtons = [];
     let secondaryButtons = [];
@@ -21,7 +21,7 @@ export default function ADL( props ){
             let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (
                     <button key = { i }
-                    onClick = { () => { handleValueFn( choiceSet, choice.value, ADLSchemaID, moment().format('Do MMMM YYYY, h:mm:ss a'));
+                    onClick = { () => { handleValueFn( choiceSet, choice.value, id, moment().format('Do MMMM YYYY, h:mm:ss a'));
                     }}>{ choice.choice }
                     </button>
                 )

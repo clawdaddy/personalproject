@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
 export default function ADLButton (props){
-    const {ADLName, ADLSchemaID, handleClickFn} = props;
+    const {name, id, handleClickFn} = props;
     return (
-        <button onClick = { () => handleClickFn( ADLSchemaID ) }> { ADLName } </button>
+        <button onClick = { () => handleClickFn( id ) }> { name } </button>
     )
 }
