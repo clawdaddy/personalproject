@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import SavedADL from './../SavedADL/SavedADL'
+import SelectedADL from './../SelectedADL/SelectedADL';
+import SaveButton from '../SaveButton/SaveButton';
+import EditButton from '../EditButton/EditButton';
+
 export default function ADL( props ){
     // constructor() {
     //     super();
@@ -9,7 +12,7 @@ export default function ADL( props ){
     //         adlChoice:
     //     }
     // }
-    const { primary, secondary, tertiary, explanation, id } = props.displayADL;
+    const { primary, secondary, tertiary, explanation, id, name } = props.displayADL;
     const { handleValueFn } = props;
     let primaryButtons = [];
     let secondaryButtons = [];
@@ -30,7 +33,7 @@ export default function ADL( props ){
             <div>
                 <p>{ choiceSet.explain }</p>  
                 { choiceButtons }
-                <SavedADL choiceSet = { choiceSet }/>
+                <SelectedADL choiceSet = { choiceSet }/>
             </div>)
 
         } else {
@@ -39,7 +42,7 @@ export default function ADL( props ){
     }
     return (
         <div>
-            
+                {name}
                 { displayButtons( primary )}
                 { displayButtons( secondary )}
                 { displayButtons( tertiary )}

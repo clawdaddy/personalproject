@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-export default class SavedADL extends Component{
+class SelectedADL extends Component{
     constructor(){
         super();
         this.state = {
@@ -42,3 +42,5 @@ export default class SavedADL extends Component{
         )
     }
 }
+
+export default SelectedADL
