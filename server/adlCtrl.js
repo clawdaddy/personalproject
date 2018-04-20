@@ -25,19 +25,30 @@ module.exports = {
                     let primarychoices = primaryResponse.choices.map( (choice, i, arr) => {
                         return Object.assign( {}, {choice:arr[i], value:primaryResponse.numbervalue[i]})
                     })
-                    messengeradl = Object.assign({}, adl, { primary:{
-                        explain:primaryResponse.choiceexplanation,
-                        choices:primarychoices,
-                        selected: -1,
-                        timeStamp: null
-                    }})
+                    messengeradl = Object.assign({}, 
+                        {
+                            explanation:adl.explanation,
+                            id:adl.id,
+                            name:adl.name,
+                            
+                        }, 
+                        { primary:{
+                            explain:primaryResponse.choiceexplanation,
+                            choices:primarychoices,
+                            selected: -1,
+                            timeStamp: null
+                            }
+                    })
                         req.app.get('db').get_secondary([adl.id]).then( choiceResponse => {
                             secondaryResponse = Object.assign({}, choiceResponse[0])
                             if (secondaryResponse.choices){
                                 secondarychoices = secondaryResponse.choices.map( (choice, i, arr) => {
                                     return Object.assign( {}, {choice:arr[i], value:secondaryResponse.numbervalue[i]})
                                 })
-                            } else secondarychoices = []
+                            } else {
+                                secondarychoices = [], 
+                                secondaryResponse.choiceexplanation = '', 
+                                secondaryResponse.secondarychoice = 0}
                             messengeradl2 = Object.assign({}, messengeradl, { secondary:{
                                 explain:secondaryResponse.choiceexplanation,
                                 choices:secondarychoices,
@@ -50,7 +61,10 @@ module.exports = {
                                     tertiarychoices = tertiaryResponse.choices.map( (choice, i, arr) => {
                                         return Object.assign( {}, {choice:arr[i], value:tertiaryResponse.numbervalue[i]})
                                     })
-                                } else tertiarychoices = []
+                                } else {
+                                    tertiarychoices = [], 
+                                    tertiaryResponse.choiceexplanation = '',
+                                    tertiaryResponse}
                                 messengeradl3 = Object.assign({},messengeradl2, { tertiary:{
                                     explain:tertiaryResponse.choiceexplanation,
                                     choices:tertiarychoices,
