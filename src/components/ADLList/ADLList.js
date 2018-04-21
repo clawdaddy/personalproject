@@ -136,24 +136,27 @@ class ADLList extends Component {
                 
                 
                 {showadl
-                ?<GridList className = {classes.gridList}
-                cols={5}
-                cellHeight='auto'>
-                {list.map( (adl, i) => (
-                    <GridListTile className = {classes.tile}>
-                        <ADLButton name = { adl.name }
-                                    key = { adl.name}
-                                    handleClickFn = { handleClick }
-                                    id = { adl.id }
-                                    ADLSaved = { ADLSaved }/>
-                    </GridListTile>
-                )
-                )}
-                </GridList> 
-                
+                ?
+                <div>
+                    <GridList className = {classes.gridList}
+                        cols={5}
+                        cellHeight='auto'>
+                        {list.map( (adl, i) => (
+                            <GridListTile className = {classes.tile}>
+                                <ADLButton name = { adl.name }
+                                            key = { adl.name}
+                                            handleClickFn = { handleClick }
+                                            id = { adl.id }
+                                            ADLSaved = { ADLSaved }/>
+                            </GridListTile>
+                        )
+                        )}
+                    </GridList> 
+                    { this.chosenADL() }
+                </div>
                 :null
             }
-                { this.chosenADL() }
+                
                 
             </div>
         )
