@@ -88,7 +88,7 @@ class ResidentList extends Component {
     render (){
         
         const { classes, residentList, group, selectedResidentID, showResident } = this.props;
-        console.log(selectedResidentID);
+        console.log(residentList);
         // let resList = residents.map( (resident, i) => {
         //     return (
         //         <Resident   resident = { resident }

@@ -34,7 +34,8 @@ class ADLList extends Component {
             selectedResidentID:-1,
             currentADL:-1,
             ADLsaved: false,
-            groupsOnState:['default is empty']
+            groupsOnState:[''],
+            currentGroup:''
         }
         this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );
@@ -51,10 +52,24 @@ class ADLList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot){
-        const { groupsOnState } = prevState;
-        const { group } = this.props;
-        let createGroupList = false;
+        const { groupsOnState, list } = prevState;
+        const { group, residentList, selectedResidentID } = this.props;
         
+        if ( (!groupsOnState.includes(group)) && (residentList !== prevProps.residentList)){
+            let newGroups = [...groupsOnState, group]
+            let newGroup = {
+                [group]:[...residentList]
+            }
+            let newGroupWList = newGroup[group].map( (resident, i, arr) => {
+                return Object.assign({}, resident, {ADLList:list})
+            })
+            this.setState({
+                groupsOnState:newGroups,
+                [group]:newGroupWList,
+                currentGroup:group,
+                selectedResidentID:selectedResidentID
+            })
+        }
 
     }
     handleClick ( id ){
@@ -62,25 +77,43 @@ class ADLList extends Component {
     }
 
     handleValue ( choiceSet, choiceValue, choiceID, timeStamp ){
-        const { list } = this.state;
-        let newList = [...list];
-        let adlIndex = _.findIndex( newList, ( adl ) => {
+        const { currentGroup } = this.state;
+        const { selectedResidentID } = this.props;
+        let residentIndex = _.findIndex( this.state[currentGroup], resident => {
+            return resident.id === selectedResidentID
+        } )
+        let oldADLList = this.state[currentGroup][residentIndex].ADLList
+        let newADLList = [...oldADLList];
+        let adlIndex = _.findIndex( newADLList, ( adl ) => {
             return adl.id === choiceID ;
         })
-        let key = _.findKey(newList[adlIndex], ( property ) => {
+        let key = _.findKey(newADLList[adlIndex], ( property ) => {
             return property.explain === choiceSet.explain;
         })
         
-        newList[adlIndex][key].selected = choiceValue;
-        newList[adlIndex][key].timeStamp = timeStamp;
-        this.setState({ list: newList });
+        newADLList[adlIndex][key].selected = choiceValue;
+        newADLList[adlIndex][key].timeStamp = timeStamp;
+        let newResident = Object.assign(
+            {}, 
+            this.state[currentGroup][residentIndex], 
+            {ADLList:newADLList})
+        let newGroup = [...this.state[currentGroup]]
+        newGroup.splice([residentIndex],1,newResident)
+        this.setState({ 
+            [currentGroup]: newGroup
+         });
         
     }
     chosenADL (){
-        const { list, currentADL, ADLSaved } = this.state;
-        const { showadl, classes } = this.props;
+        const { currentADL, ADLSaved, currentGroup } = this.state;
+        const { showadl, classes, selectedResidentID } = this.props;
+        let residentIndex = _.findIndex( this.state[currentGroup], resident => {
+            return resident.id === selectedResidentID
+        } )
+        let adlList = [...this.state[currentGroup][residentIndex].ADLList]
+
         if ( currentADL >= 0 && showadl === true){
-            let displayADL = _.find(list, ( element ) => { return element.id === currentADL } )
+            let displayADL = _.find(adlList, ( element ) => { return element.id === currentADL } )
             return (
                 <div>
                     <ADL displayADL = {displayADL} 
@@ -109,7 +142,7 @@ class ADLList extends Component {
                 {list.map( (adl, i) => (
                     <GridListTile className = {classes.tile}>
                         <ADLButton name = { adl.name }
-                                    key = {i}
+                                    key = { adl.name}
                                     handleClickFn = { handleClick }
                                     id = { adl.id }
                                     ADLSaved = { ADLSaved }/>

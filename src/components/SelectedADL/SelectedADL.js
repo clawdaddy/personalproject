@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { withStyles } from 'material-ui/styles';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 class SelectedADL extends Component{
     constructor(){
@@ -9,7 +13,7 @@ class SelectedADL extends Component{
             text:"none selected"
         }
     }
-    componentDidUpdate ( prevProps ){
+    componentDidUpdate ( prevProps, prevState, snapshot ){
         const { choiceSet } = this.props;
         const { prevChoiceSet } = prevProps;
         const { displayChoice } = this.state;
@@ -27,7 +31,7 @@ class SelectedADL extends Component{
             this.setState({
                 displayChoice:choiceSet.selected,
             })
-        this.setState ( { text: choiceText})
+        this.setState ( { text: choiceText} )
         }
     }
    
@@ -40,6 +44,14 @@ class SelectedADL extends Component{
                 
             </div>
         )
+    }
+}
+
+function mapStateToProps ( state ){
+    return {
+        selectedResidentID: state.selectedResidentID,
+        group: state.group,
+
     }
 }
 
