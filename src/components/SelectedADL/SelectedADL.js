@@ -50,7 +50,9 @@ class SelectedADL extends Component{
 function mapStateToProps ( state ){
     return {
         selectedResidentID: state.selectedResidentID,
-        choiceObjects: state.choiceObjects
+        choiceObjects: state.choiceObjects,
+        currentADLID: state.currentADLID
+
     }
 }
 

@@ -77,19 +77,30 @@ class ADLList extends Component {
     //     this.setState({currentADL: id})
     // }
 
-    handleValue ( choiceSet, choiceValue, choiceID, timeStamp ){
+    handleValue ( choiceSet, choiceValue, choiceID, timeStamp, choiceExplain ){
         const { currentGroup } = this.state;
         const { selectedResidentID, userID, choiceObjects, saveChoiceObject} = this.props;
+        let choiceIndex = -1;
+        let newChoiceObjects = _.slice(choiceObjects, 0, choiceObjects.length)
+        let prevChoiceObj = _.filter(newChoiceObjects, choiceObject => {
+            choiceObject.residentID === selectedResidentID 
+            && choiceObject.adlID === choiceID 
+        })
         let choiceObj = Object.assign({},
             {
                 residentID:selectedResidentID,
                 adlID: choiceID,
                 adlChoiceVal: choiceValue,
+                adlChoiceExplain: choiceExplain,
                 timeStamp: timeStamp,
                 userID: userID,
-                questionSet: 
             })
-        let newChoiceObjects = [...choiceObjects, choiceObj]
+        if (prevChoiceObj){
+            choiceIndex = newChoiceObjects.indexOf(prevChoiceObj[0])
+            newChoiceObjects.splice(choiceIndex, 1, choiceObj)
+        } else {
+            newChoiceObjects.push(choiceObj)
+        }
         saveChoiceObject(newChoiceObjects)
         // let residentIndex = _.findIndex( this.state[currentGroup], resident => {
         //     return resident.id === selectedResidentID
@@ -117,12 +128,11 @@ class ADLList extends Component {
         
     }
     chosenADL (){
-        const { currentADL, ADLSaved, currentGroup } = this.state;
+        const { currentADL, ADLSaved, list } = this.state;
         const { showadl, classes, selectedResidentID } = this.props;
-        let residentIndex = _.findIndex( this.state[currentGroup], resident => {
-            return resident.id === selectedResidentID
-        } )
-        let adlList = [...this.state[currentGroup][residentIndex].ADLList]
+        
+        //this line needs to change to reference old list, not grouplist
+        let adlList = [...list]
 
         if ( currentADL >= 0 && showadl === true){
             let displayADL = _.find(adlList, ( element ) => { return element.id === currentADL } )

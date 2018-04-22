@@ -18,14 +18,16 @@ export default function ADL( props ){
     let secondaryButtons = [];
     let tertiaryButtons = [];
     
-    
+    // I AM SETTING THIS UP SO THAT IT GETS THE ADL INFO
+    //FROM THE REDUX STORE, I NEED TO FINISH THIS BEFORE IT WILL
+    //WORK AGAIN
     function displayButtons ( choiceSet ) {
         const { displayADL } = props;
         if (choiceSet){
             let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (
                     <button key = { i }
-                    onClick = { () => { handleValueFn( choiceSet, choice.value, id, moment().format('Do MMMM YYYY, h:mm:ss a'));
+                    onClick = { () => { handleValueFn( choiceSet, choice.value, id, moment().format('Do MMMM YYYY, h:mm:ss a'), choice.explain);
                     }}>{ choice.choice }
                     </button>
                 )

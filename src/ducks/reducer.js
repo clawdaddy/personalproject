@@ -13,11 +13,7 @@ const initialState = {
     showResident:false,
     showadl: false,
     choiceObjects:[],
-    currentADL:{
-        explanation:'',
-        id:-1,
-        name:''
-    }
+    currentADLID:-1
 }
 //declare names of action variables//
 const CURRENT_SHIFT = 'CURRENT_SHIFT';
@@ -128,6 +124,9 @@ export default function reducer ( state = initialState, action) {
         case SAVE_CHOICE_OBJECT:
             return Object.assign( {}, state, { choiceObjects:action.payload })
 
+        case CURRENT_ADL:
+            return Object.assign( {}, state, { currentADLID: action.payload})
+            
         default: return state;
     }
 }

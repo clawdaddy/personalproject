@@ -4,7 +4,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
 import updateADL from '../../ducks/reducer';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 
 const styles = theme => ({
