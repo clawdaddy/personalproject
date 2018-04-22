@@ -88,10 +88,10 @@ export function saveChoiceObject ( choiceObjectArray ){
     }
 }
 
-export function updateADL ( ADL ){
+export function updateADL ( adlID ){
     return {
         type: CURRENT_ADL,
-        payload: ADL
+        payload: adlID
     }
 }
 
@@ -126,7 +126,7 @@ export default function reducer ( state = initialState, action) {
 
         case CURRENT_ADL:
             return Object.assign( {}, state, { currentADLID: action.payload})
-            
+
         default: return state;
     }
 }

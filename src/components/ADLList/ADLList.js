@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import saveChoiceObject from '../../ducks/reducer';
+import { saveChoiceObject } from '../../ducks/reducer';
 
 const styles = theme => ({
     root: {
@@ -34,9 +34,6 @@ class ADLList extends Component {
         this.state = {
             selectedResidentID:-1,
             currentADL:-1,
-            ADLsaved: false,
-            groupsOnState:[''],
-            currentGroup:''
         }
         // this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );
@@ -77,14 +74,14 @@ class ADLList extends Component {
     //     this.setState({currentADL: id})
     // }
 
-    handleValue ( choiceSet, choiceValue, choiceID, timeStamp, choiceExplain ){
+    handleValue ( choiceSet, choiceValue, choiceID, timeStamp, choiceExplain, choiceSetKey ){
         const { currentGroup } = this.state;
         const { selectedResidentID, userID, choiceObjects, saveChoiceObject} = this.props;
         let choiceIndex = -1;
         let newChoiceObjects = _.slice(choiceObjects, 0, choiceObjects.length)
         let prevChoiceObj = _.filter(newChoiceObjects, choiceObject => {
-            choiceObject.residentID === selectedResidentID 
-            && choiceObject.adlID === choiceID 
+            return (choiceObject.residentID === selectedResidentID 
+            && choiceObject.adlID === choiceID )
         })
         let choiceObj = Object.assign({},
             {
@@ -94,6 +91,8 @@ class ADLList extends Component {
                 adlChoiceExplain: choiceExplain,
                 timeStamp: timeStamp,
                 userID: userID,
+                choiceSetKey: choiceSetKey,
+                ADLSaved: false
             })
         if (prevChoiceObj){
             choiceIndex = newChoiceObjects.indexOf(prevChoiceObj[0])
@@ -128,19 +127,23 @@ class ADLList extends Component {
         
     }
     chosenADL (){
-        const { currentADL, ADLSaved, list } = this.state;
-        const { showadl, classes, selectedResidentID } = this.props;
+        const { ADLSaved, list } = this.state;
+        const { showadl, classes, selectedResidentID, currentADLID, choiceObjects } = this.props;
         
         //this line needs to change to reference old list, not grouplist
         let adlList = [...list]
 
-        if ( currentADL >= 0 && showadl === true){
-            let displayADL = _.find(adlList, ( element ) => { return element.id === currentADL } )
+        if ( currentADLID >= 0 && showadl === true){
+            let displayADL = _.find(adlList, ( element ) => { return element.id === currentADLID } )
             return (
                 <div>
                     <ADL displayADL = {displayADL} 
                     handleValueFn = { this.handleValue }
-                    ADLSaved = { ADLSaved }/>
+                    key = { displayADL.id }
+                    selectedResidentID = { selectedResidentID }
+                    currentADLID = { currentADLID }
+                    choiceObjects = { choiceObjects }
+                    />
                     {/* <SavedADL choiceSet = { displayADL} /> */}
                 </div>
             )
@@ -150,7 +153,7 @@ class ADLList extends Component {
     
     render (){
         const { showadl, classes } = this.props;
-        const { list, ADLSaved } = this.state;
+        const { list } = this.state;
         const { handleClick } = this;
         
         return (
@@ -167,7 +170,7 @@ class ADLList extends Component {
                             <GridListTile className = {classes.tile}>
                                 <ADLButton adl = { adl }
                                             key = { adl.name}
-                                            ADLSaved = { ADLSaved }/>
+                                            />
                             </GridListTile>
                         )
                         )}
@@ -190,7 +193,8 @@ function mapStateToProps( state ){
         residentList: state.residentList,
         group: state.group,
         userID: state.userID,
-        choiceObjects: state.choiceObjects
+        choiceObjects: state.choiceObjects,
+        currentADLID: state.currentADLID
     }
 }
 

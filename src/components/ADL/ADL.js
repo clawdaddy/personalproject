@@ -4,6 +4,7 @@ import moment from 'moment';
 import SelectedADL from './../SelectedADL/SelectedADL';
 import SaveButton from '../SaveButton/SaveButton';
 import EditButton from '../EditButton/EditButton';
+import { connect } from 'react-redux';
 
 export default function ADL( props ){
     // constructor() {
@@ -22,12 +23,15 @@ export default function ADL( props ){
     //FROM THE REDUX STORE, I NEED TO FINISH THIS BEFORE IT WILL
     //WORK AGAIN
     function displayButtons ( choiceSet ) {
-        const { displayADL } = props;
+        const { displayADL, currentADLID, choiceObjects, selectedResidentID } = props;
+        const choiceSetKey = _.findKey( displayADL, set =>
+            {return set.explain === choiceSet.explain }
+        )
         if (choiceSet){
             let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (
                     <button key = { i }
-                    onClick = { () => { handleValueFn( choiceSet, choice.value, id, moment().format('Do MMMM YYYY, h:mm:ss a'), choice.explain);
+                    onClick = { () => { handleValueFn( choiceSet, choice.value, id, moment().format('Do MMMM YYYY, h:mm:ss a'), choice.choice, choiceSetKey);
                     }}>{ choice.choice }
                     </button>
                 )
@@ -36,7 +40,12 @@ export default function ADL( props ){
             <div>
                 <p>{ choiceSet.explain }</p>  
                 { choiceButtons }
-                <SelectedADL choiceSet = { choiceSet }/>
+                <SelectedADL choiceSet = { choiceSet }
+                displayADL = { displayADL }
+                // currentADLID = { currentADLID }
+                // choiceObjects = { choiceObjects }
+                // selectedResidentID = { selectedResidentID }
+                />
             </div>)
 
         } else {
@@ -51,4 +60,11 @@ export default function ADL( props ){
                 { displayButtons( tertiary )}
         </div>
     )
+}
+
+
+function mapStateToProps ( state ) {
+    return {
+
+    }
 }

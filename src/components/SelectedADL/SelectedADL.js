@@ -14,24 +14,39 @@ class SelectedADL extends Component{
         }
     }
     componentDidUpdate ( prevProps, prevState, snapshot ){
-        const { choiceSet, selectedResidentID, choiceObjects } = this.props;
+        const { choiceSet, selectedResidentID, choiceObjects, currentADLID, displayADL } = this.props;
         const { prevChoiceSet } = prevProps;
-        const { displayChoice } = this.state;
+        const { displayChoice } = prevState;
+
         let choiceText = ""
-        if ( choiceSet.selected === -1 ){
+        let choiceSetKey = _.findKey(displayADL, property => {
+            return property.explain === choiceSet.explain
+        })
+        let choiceObject = _.find(choiceObjects, choiceObj => {
+            return (choiceObj.residentID === selectedResidentID &&
+            choiceObj.adlID === currentADLID &&
+            choiceObj.choiceSetKey === choiceSetKey)
+        })
+
+        if ( !choiceObject ){
             choiceText = 'none selected'
         } 
-        else if ( displayChoice === choiceSet.selected){
+        else if ( displayChoice === choiceObject.adlChoiceVal){
             null
         } else {
-            let choiceObject = _.find( choiceSet.choices, ( choice ) => {
-                return choice.value === choiceSet.selected
-            })
-            choiceText = choiceObject.choice
             this.setState({
-                displayChoice:choiceSet.selected,
+                displayChoice: choiceObject.adlChoiceVal,
+                text: choiceObject.adlChoiceExplain
             })
-        this.setState ( { text: choiceText} )
+            
+            // let choiceObject = _.find( choiceSet.choices, ( choice ) => {
+            //     return choice.value === choiceSet.selected
+            // })
+            // choiceText = choiceObject.choice
+            // this.setState({
+            //     displayChoice:choiceSet.selected,
+            // })
+            // this.setState ( { text: choiceText} )
         }
     }
    
@@ -56,4 +71,4 @@ function mapStateToProps ( state ){
     }
 }
 
-export default SelectedADL
+export default connect (mapStateToProps, null)(SelectedADL)
