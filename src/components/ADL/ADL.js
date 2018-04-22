@@ -20,6 +20,7 @@ export default function ADL( props ){
     
     
     function displayButtons ( choiceSet ) {
+        const { displayADL } = props;
         if (choiceSet){
             let choiceButtons = _.map( choiceSet.choices, (choice, i) => {
                 return (

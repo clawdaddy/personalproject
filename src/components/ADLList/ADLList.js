@@ -86,7 +86,8 @@ class ADLList extends Component {
                 adlID: choiceID,
                 adlChoiceVal: choiceValue,
                 timeStamp: timeStamp,
-                userID: userID
+                userID: userID,
+                questionSet: 
             })
         let newChoiceObjects = [...choiceObjects, choiceObj]
         saveChoiceObject(newChoiceObjects)

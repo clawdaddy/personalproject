@@ -12,7 +12,12 @@ const initialState = {
     residentList:[],
     showResident:false,
     showadl: false,
-    choiceObjects:[]
+    choiceObjects:[],
+    currentADL:{
+        explanation:'',
+        id:-1,
+        name:''
+    }
 }
 //declare names of action variables//
 const CURRENT_SHIFT = 'CURRENT_SHIFT';
