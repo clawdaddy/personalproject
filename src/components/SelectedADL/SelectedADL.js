@@ -14,7 +14,7 @@ class SelectedADL extends Component{
         }
     }
     componentDidUpdate ( prevProps, prevState, snapshot ){
-        const { choiceSet } = this.props;
+        const { choiceSet, selectedResidentID, choiceObjects } = this.props;
         const { prevChoiceSet } = prevProps;
         const { displayChoice } = this.state;
         let choiceText = ""
@@ -50,8 +50,7 @@ class SelectedADL extends Component{
 function mapStateToProps ( state ){
     return {
         selectedResidentID: state.selectedResidentID,
-        group: state.group,
-
+        choiceObjects: state.choiceObjects
     }
 }
 

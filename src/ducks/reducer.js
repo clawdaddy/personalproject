@@ -1,6 +1,6 @@
 const initialState = {
     username:"",
-    userID:0,
+    userID:'',
     selectedResidentID:0,
     shift:"",
     facility: {
@@ -12,7 +12,7 @@ const initialState = {
     residentList:[],
     showResident:false,
     showadl: false,
-    
+    choiceObjects:[]
 }
 //declare names of action variables//
 const CURRENT_SHIFT = 'CURRENT_SHIFT';
@@ -23,6 +23,8 @@ const FACILITY = 'FACILITY';
 const RESIDENT_LIST = 'RESIDENT_LIST';
 const SHOW_RESIDENT = 'SHOW_RESIDENT';
 const SHOW_ADL = 'SHOW_ADL';
+const SAVE_CHOICE_OBJECT = 'SAVE_CHOICE_OBJECT';
+const CURRENT_ADL = 'CURRENT_ADL';
 
 export function selectShift (shift){
     return {
@@ -78,6 +80,20 @@ export function showadllist ( boolean ){
     }
 }
 
+export function saveChoiceObject ( choiceObjectArray ){
+    return {
+        type:SAVE_CHOICE_OBJECT,
+        payload:choiceObjectArray
+    }
+}
+
+export function updateADL ( ADL ){
+    return {
+        type: CURRENT_ADL,
+        payload: ADL
+    }
+}
+
 export default function reducer ( state = initialState, action) {
     switch (action.type){
         case CURRENT_SHIFT:
@@ -103,6 +119,9 @@ export default function reducer ( state = initialState, action) {
 
         case SHOW_ADL:
             return Object.assign( {}, state, { showadl: action.payload})
+
+        case SAVE_CHOICE_OBJECT:
+            return Object.assign( {}, state, { choiceObjects:action.payload })
 
         default: return state;
     }

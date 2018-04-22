@@ -3,6 +3,8 @@ import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
+import updateADL from '../../ducks/reducer';
+import { connect } from 'react-redux'
 
 
 const styles = theme => ({
@@ -13,14 +15,14 @@ const styles = theme => ({
     }
 })
 function ADLButton (props){
-    const {name, id, handleClickFn, classes} = props;
+    const {adl, classes} = props;
     return (
         <Button 
         className={ classes.root }
         variant= {'raised'}
-        onClick = { () => handleClickFn( id ) }
+        onClick = { () => updateADL( adl ) }
         > 
-        { name } 
+        { adl.name } 
         </Button>
     )
 }
@@ -30,4 +32,5 @@ ADLButton.propTypes = {
     classes:PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ADLButton)
+
+export default connect (null, { updateADL })(withStyles(styles)(ADLButton))

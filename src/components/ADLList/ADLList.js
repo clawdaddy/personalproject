@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import saveChoiceObject from '../../ducks/reducer';
 
 const styles = theme => ({
     root: {
@@ -37,7 +38,7 @@ class ADLList extends Component {
             groupsOnState:[''],
             currentGroup:''
         }
-        this.handleClick = this.handleClick.bind( this );
+        // this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );
     }
 
@@ -51,57 +52,67 @@ class ADLList extends Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot){
-        const { groupsOnState, list } = prevState;
-        const { group, residentList, selectedResidentID } = this.props;
+    // componentDidUpdate(prevProps, prevState, snapshot){
+    //     const { groupsOnState, list } = prevState;
+    //     const { group, residentList, selectedResidentID } = this.props;
         
-        if ( (!groupsOnState.includes(group)) && (residentList !== prevProps.residentList)){
-            let newGroups = [...groupsOnState, group]
-            let newGroup = {
-                [group]:[...residentList]
-            }
-            let newGroupWList = newGroup[group].map( (resident, i, arr) => {
-                return Object.assign({}, resident, {ADLList:list})
-            })
-            this.setState({
-                groupsOnState:newGroups,
-                [group]:newGroupWList,
-                currentGroup:group,
-                selectedResidentID:selectedResidentID
-            })
-        }
+    //     if ( (!groupsOnState.includes(group)) && (residentList !== prevProps.residentList)){
+    //         let newGroups = [...groupsOnState, group]
+    //         let newGroup = {
+    //             [group]:[...residentList]
+    //         }
+    //         let newGroupWList = newGroup[group].map( (resident, i, arr) => {
+    //             return Object.assign({}, resident, {ADLList:list})
+    //         })
+    //         this.setState({
+    //             groupsOnState:newGroups,
+    //             [group]:newGroupWList,
+    //             currentGroup:group,
+    //             selectedResidentID:selectedResidentID
+    //         })
+    //     }
 
-    }
-    handleClick ( id ){
-        this.setState({currentADL: id})
-    }
+    // }
+    // handleClick ( id ){
+    //     this.setState({currentADL: id})
+    // }
 
     handleValue ( choiceSet, choiceValue, choiceID, timeStamp ){
         const { currentGroup } = this.state;
-        const { selectedResidentID } = this.props;
-        let residentIndex = _.findIndex( this.state[currentGroup], resident => {
-            return resident.id === selectedResidentID
-        } )
-        let oldADLList = this.state[currentGroup][residentIndex].ADLList
-        let newADLList = [...oldADLList];
-        let adlIndex = _.findIndex( newADLList, ( adl ) => {
-            return adl.id === choiceID ;
-        })
-        let key = _.findKey(newADLList[adlIndex], ( property ) => {
-            return property.explain === choiceSet.explain;
-        })
-        
-        newADLList[adlIndex][key].selected = choiceValue;
-        newADLList[adlIndex][key].timeStamp = timeStamp;
-        let newResident = Object.assign(
-            {}, 
-            this.state[currentGroup][residentIndex], 
-            {ADLList:newADLList})
-        let newGroup = [...this.state[currentGroup]]
-        newGroup.splice([residentIndex],1,newResident)
-        this.setState({ 
-            [currentGroup]: newGroup
-         });
+        const { selectedResidentID, userID, choiceObjects, saveChoiceObject} = this.props;
+        let choiceObj = Object.assign({},
+            {
+                residentID:selectedResidentID,
+                adlID: choiceID,
+                adlChoiceVal: choiceValue,
+                timeStamp: timeStamp,
+                userID: userID
+            })
+        let newChoiceObjects = [...choiceObjects, choiceObj]
+        saveChoiceObject(newChoiceObjects)
+        // let residentIndex = _.findIndex( this.state[currentGroup], resident => {
+        //     return resident.id === selectedResidentID
+        // } )
+        // let oldADLList = this.state[currentGroup][residentIndex].ADLList
+        // let newADLList = oldADLList.map( ADL => {
+        //     return Object.assign({}, ADL)
+        // })
+        // let adlIndex = _.findIndex( newADLList, ( adl ) => {
+        //     return adl.id === choiceID ;
+        // })
+        // let key = _.findKey(newADLList[adlIndex], ( property ) => {
+        //     return property.explain === choiceSet.explain;
+        // })
+        //something here assigning stuff to a newADLList
+        // let newResident = Object.assign(
+        //     {}, 
+        //     this.state[currentGroup][residentIndex], 
+        //     {ADLList:newADLList})
+        // let newGroup = [...this.state[currentGroup]]
+        // newGroup.splice([residentIndex],1,newResident)
+        // this.setState({ 
+        //     [currentGroup]: newGroup
+        //  });
         
     }
     chosenADL (){
@@ -143,10 +154,8 @@ class ADLList extends Component {
                         cellHeight='auto'>
                         {list.map( (adl, i) => (
                             <GridListTile className = {classes.tile}>
-                                <ADLButton name = { adl.name }
+                                <ADLButton adl = { adl }
                                             key = { adl.name}
-                                            handleClickFn = { handleClick }
-                                            id = { adl.id }
                                             ADLSaved = { ADLSaved }/>
                             </GridListTile>
                         )
@@ -168,7 +177,9 @@ function mapStateToProps( state ){
         showadl: state.showadl,
         selectedResidentID: state.selectedResidentID,
         residentList: state.residentList,
-        group: state.group
+        group: state.group,
+        userID: state.userID,
+        choiceObjects: state.choiceObjects
     }
 }
 
@@ -176,7 +187,7 @@ ADLList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps, null )(withStyles(styles)(ADLList))
+export default connect(mapStateToProps, { saveChoiceObject } )(withStyles(styles)(ADLList))
 
 // list:[
             //     {
