@@ -36,6 +36,11 @@ const styles = theme => ({
     title: {
         color: theme.palette.primary.light,
     },
+    // tile: {
+    //     borderColor: theme.palette.secondary.main,
+    //     border: 20,
+    //     borderRadius: 50
+    // },
     titleBar: {
         background:
         'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, grba(0,0,0,0) 100%)'
@@ -83,7 +88,7 @@ class ResidentList extends Component {
     render (){
         
         const { classes, residentList, group, selectedResidentID, showResident } = this.props;
-        console.log(selectedResidentID);
+        console.log(residentList);
         // let resList = residents.map( (resident, i) => {
         //     return (
         //         <Resident   resident = { resident }
@@ -113,7 +118,11 @@ class ResidentList extends Component {
                     cols={ 5 }
                     cellHeight='auto'>
                         {residentList.map( tile => (
-                            <GridListTile key = { tile.id } onClick={ () => this.pickResident(tile.id)}>
+                            <GridListTile 
+                            key = { tile.id } 
+                            onClick={ () => this.pickResident(tile.id)}
+                            className = { classes.tile }
+                            >
                             <img src={ tile.pic } alt={ `${tile.firstName} ${tile.lastName}`} />
                             <GridListTileBar
                             title={ `${tile.firstname} ${tile.lastname}`}

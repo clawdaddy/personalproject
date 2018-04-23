@@ -94,5 +94,7 @@ app.post('/api/group', residentCtrl.getResidents)
 
 // ADL endpoints //
 app.get('/api/adllist', adlctrl.getadlSchema)
+app.post('/api/postadl', adlctrl.postadl)
+app.patch('/api/patchadl', adlctrl.patchadl)
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

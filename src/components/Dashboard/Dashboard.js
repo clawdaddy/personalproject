@@ -39,7 +39,7 @@ export default class Dashboard extends Component {
                     <ResidentList/>
                     <ADLList/>
                 </Grid>
-                :<div>Unauthorized</div>}
+                :<div>Unauthorized</div>} 
             </div>
         )
     }
