@@ -81,5 +81,23 @@ module.exports = {
             })
         })
     },
-    getadlChoices: (req, res, next) => {    }
+    postadl: (req, res, next) => {  
+        const { residentID, adlID, primaryChoice, primaryExplain, 
+            secondaryChoice, secondaryExplain, tertiaryChoice, tertiaryExplain,
+            userID, timeStamp} = req.body.adlObj;
+
+        req.app.get('db').add_adl_choice([residentID, userID, adlID, primaryChoice, primaryExplain, secondaryChoice, secondaryExplain, tertiaryChoice, tertiaryExplain])
+            .then( id =>
+            res.status(200).send(id))
+      },
+    patchadl: (req, res, next) => {
+        const { primaryChoice, primaryExplain, 
+            secondaryChoice, secondaryExplain, tertiaryChoice, tertiaryExplain,
+            userID, timeStamp, saveID} = req.body.adlObj;
+
+        req.app.get('db').patchadl([primaryChoice, primaryExplain, secondaryChoice, secondaryExplain,
+        tertiaryChoice, tertiaryExplain, userID, saveID])
+    }
+      
+
 }

@@ -6,6 +6,7 @@ import SaveButton from '../SaveButton/SaveButton';
 import EditButton from '../EditButton/EditButton';
 import { connect } from 'react-redux';
 
+
 function ADL( props ){
     // constructor() {
     //     super();
@@ -14,6 +15,7 @@ function ADL( props ){
     //     }
     // }
     const { primary, secondary, tertiary, explanation, id, name } = props.displayADL;
+    const { displayADL } = props;
     const { handleValueFn } = props;
     let primaryButtons = [];
     let secondaryButtons = [];
@@ -23,7 +25,7 @@ function ADL( props ){
     //FROM THE REDUX STORE, I NEED TO FINISH THIS BEFORE IT WILL
     //WORK AGAIN
     function displayButtons ( choiceSet ) {
-        const { displayADL, currentADLID, choiceObjects, selectedResidentID } = props;
+        const { currentADLID, choiceObjects, selectedResidentID } = props;
         const choiceSetKey = _.findKey( displayADL, set =>
             {return set.explain === choiceSet.explain }
         )
@@ -58,6 +60,12 @@ function ADL( props ){
                 { displayButtons( primary )}
                 { displayButtons( secondary )}
                 { displayButtons( tertiary )}
+                <SaveButton primaryADL = {primary}
+                secondaryADL = {secondary}
+                tertiaryADL = {tertiary}
+                displayADL = {displayADL}
+                
+                />
         </div>
     )
 }
