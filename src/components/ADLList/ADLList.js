@@ -79,9 +79,11 @@ class ADLList extends Component {
         const { selectedResidentID, userID, choiceObjects, saveChoiceObject} = this.props;
         let choiceIndex = -1;
         let newChoiceObjects = _.slice(choiceObjects, 0, choiceObjects.length)
-        let prevChoiceObj = _.filter(newChoiceObjects, choiceObject => {
+        let prevChoiceObj = _.find(newChoiceObjects, choiceObject => {
+
             return (choiceObject.residentID === selectedResidentID 
-            && choiceObject.adlID === choiceID )
+            && choiceObject.adlID === choiceID 
+            && choiceObject.choiceSetKey === choiceSetKey)
         })
         let choiceObj = Object.assign({},
             {
@@ -95,7 +97,7 @@ class ADLList extends Component {
                 ADLSaved: false
             })
         if (prevChoiceObj){
-            choiceIndex = newChoiceObjects.indexOf(prevChoiceObj[0])
+            choiceIndex = newChoiceObjects.indexOf(prevChoiceObj)
             newChoiceObjects.splice(choiceIndex, 1, choiceObj)
         } else {
             newChoiceObjects.push(choiceObj)

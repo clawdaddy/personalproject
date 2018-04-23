@@ -6,7 +6,7 @@ import SaveButton from '../SaveButton/SaveButton';
 import EditButton from '../EditButton/EditButton';
 import { connect } from 'react-redux';
 
-export default function ADL( props ){
+function ADL( props ){
     // constructor() {
     //     super();
     //     this.state = {
@@ -65,6 +65,8 @@ export default function ADL( props ){
 
 function mapStateToProps ( state ) {
     return {
-
+        currentADLID: state.currentADLID
     }
 }
+
+export default connect (mapStateToProps, null)(ADL)
