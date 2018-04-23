@@ -46,7 +46,7 @@ class SaveButton extends Component {
                 return property.explain === tertiaryADL.explain
             }) 
 
-            let adlSaveID = primaryADL.saveID.id
+            
 
             let prevPrimaryObj = _.find(newChoiceObjects, choiceObject => {
         
@@ -54,7 +54,7 @@ class SaveButton extends Component {
                 && choiceObject.adlID === currentADLID 
                 && choiceObject.choiceSetKey === primarySetKey)
             })
-        
+            let adlSaveID = prevPrimaryObj.saveID
             if (secondaryCheck.explain){
                 prevSecondaryObj = _.find(newChoiceObjects, choiceObject => {
         
@@ -101,7 +101,8 @@ class SaveButton extends Component {
                 timeStamp: prevPrimaryObj.timeStamp,
                 userID: userID,
                 choiceSetKey: prevPrimaryObj.choiceSetKey,
-                ADLSaved:true
+                ADLSaved:true,
+                saveID: prevPrimaryObj.saveID
             })
             let secondaryObj = Object.assign({},
                 {
@@ -142,45 +143,46 @@ class SaveButton extends Component {
         if (adlSaveID){
             axios.patch(`/api/patchadl`, { adlObj }).then( response => {
                 let primaryChoiceIndex = newChoiceObjects.indexOf(prevPrimaryObj)
-                primaryObj.saveID = response.data[0]
+                primaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(primaryChoiceIndex, 1, primaryObj)
             
             if (secondaryCheck.explain){
                 secondaryChoiceIndex = newChoiceObjects.indexOf(prevSecondaryObj)
-                secondaryObj.saveID = response.data[0]
+                secondaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(secondaryChoiceIndex, 1, secondaryObj)
                 
             }
             if (tertiaryCheck.explain){
                 tertiaryChoiceIndex = newChoiceObjects.indexOf(prevTertiaryObj)
-                tertiaryObj.saveID = response.data[0]
+                tertiaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(tertiaryChoiceIndex, 1, tertiaryObj)
             }
             
             saveChoiceObject(newChoiceObjects)
+            alert('Edit')
             })
         }
         else {
             axios.post(`/api/postadl`, { adlObj }).then( response => {
                 console.log(response.data);
                 let primaryChoiceIndex = newChoiceObjects.indexOf(prevPrimaryObj)
-                primaryObj.saveID = response.data[0]
+                primaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(primaryChoiceIndex, 1, primaryObj)
             
             if (secondaryCheck.explain){
                 secondaryChoiceIndex = newChoiceObjects.indexOf(prevSecondaryObj)
-                secondaryObj.saveID = response.data[0]
+                secondaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(secondaryChoiceIndex, 1, secondaryObj)
                 
             }
             if (tertiaryCheck.explain){
                 tertiaryChoiceIndex = newChoiceObjects.indexOf(prevTertiaryObj)
-                tertiaryObj.saveID = response.data[0]
+                tertiaryObj.saveID = response.data[0].id
                 newChoiceObjects.splice(tertiaryChoiceIndex, 1, tertiaryObj)
             }
             
             saveChoiceObject(newChoiceObjects)
-        
+            alert('Saved')
         
         })
     }

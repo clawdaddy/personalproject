@@ -97,6 +97,8 @@ module.exports = {
 
         req.app.get('db').patchadl([primaryChoice, primaryExplain, secondaryChoice, secondaryExplain,
         tertiaryChoice, tertiaryExplain, userID, saveID])
+        .then( id =>
+        res.status(200).send(id))
     }
       
 
