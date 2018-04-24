@@ -20,7 +20,7 @@ class SaveButton extends Component {
     
     
     saveADL( id ){
-        const { choiceObjects, selectedResidentID, userID, currentADLID, displayADL, primaryADL, secondaryADL, tertiaryADL } = this.props;
+        const { choiceObjects, selectedResidentID, userID, currentADLID, displayADL, primaryADL, secondaryADL, tertiaryADL, saveChoiceObject } = this.props;
         const { buttonDisable } = this.state;
             let prevSecondaryObj = {};
             let prevTertiaryObj = {};
@@ -137,7 +137,8 @@ class SaveButton extends Component {
                 tertiaryChoice: tertiaryObj.adlChoiceVal,
                 tertiaryExplain: tertiaryObj.adlChoiceExplain,
                 userID: userID,
-                timeStamp: primaryObj.timeStamp
+                timeStamp: primaryObj.timeStamp,
+                saveID: primaryObj.saveID
             }
         
         if (adlSaveID){
@@ -182,7 +183,7 @@ class SaveButton extends Component {
             }
             
             saveChoiceObject(newChoiceObjects)
-            alert('Saved')
+            // alert('Saved')
         
         })
     }
@@ -198,7 +199,7 @@ class SaveButton extends Component {
         })
     }
     deleteADL(){
-
+        alert('Deleted')
     }
     render(){
     return (
@@ -218,4 +219,4 @@ function mapStateToProps( state ){
         currentADLID: state.currentADLID
     }
 }
-export default connect(mapStateToProps, { saveChoiceObject })(SaveButton)
+export default connect(mapStateToProps, { saveChoiceObject })(withStyles(null)(SaveButton))

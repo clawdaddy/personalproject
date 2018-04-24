@@ -171,7 +171,7 @@ class ADLList extends Component {
         const { showadl, classes } = this.props;
         const { list } = this.state;
         const { handleClick } = this;
-        
+console.log(list)
         return (
             <div className = {classes.root}>
                 
