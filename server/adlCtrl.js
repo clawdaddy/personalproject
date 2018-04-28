@@ -99,7 +99,12 @@ module.exports = {
         tertiaryChoice, tertiaryExplain, userID, saveID])
         .then( id =>
         res.status(200).send(id))
+    },
+    deleteadl: (req, res, next) => {
+        const { deleteID } = req.query;
+        
+        req.app.get('db').delete_adl_choice([deleteID])
+        .then( () => res.sendStatus(200))
     }
-      
 
 }

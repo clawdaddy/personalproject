@@ -14,7 +14,8 @@ const initialState = {
     showadl: false,
     choiceObjects:[],
     currentADLID:-1,
-    rerenderADL:false
+    rerenderADL:false,
+    loggedOut:false
 }
 //declare names of action variables//
 const CURRENT_SHIFT = 'CURRENT_SHIFT';
@@ -28,6 +29,7 @@ const SHOW_ADL = 'SHOW_ADL';
 const SAVE_CHOICE_OBJECT = 'SAVE_CHOICE_OBJECT';
 const CURRENT_ADL = 'CURRENT_ADL';
 const RENDER_ADL = 'RENDER_ADL';
+const LOGGING_OUT = 'LOGGING_OUT';
 
 export function selectShift (shift){
     return {
@@ -104,6 +106,13 @@ export function rerender ( boolean ){
     }
 }
 
+export function loggingOut ( boolean ){
+    return {
+        type: LOGGING_OUT,
+        payload: boolean
+    }
+}
+
 export default function reducer ( state = initialState, action) {
     switch (action.type){
         case CURRENT_SHIFT:
@@ -138,6 +147,9 @@ export default function reducer ( state = initialState, action) {
 
         case RENDER_ADL:
             return Object.assign( {}, state, { rerender: action.payload })
+
+        case LOGGING_OUT:
+            return Object.assign( {}, state, { loggedOut: action.payload })
 
         default: return state;
     }

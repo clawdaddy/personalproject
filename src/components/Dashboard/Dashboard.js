@@ -7,6 +7,7 @@ import Facility from '../Facility/Facility';
 import ADLList from '../ADLList/ADLList';
 import axios from 'axios';
 
+
 export default class Dashboard extends Component {
     constructor(){
         super();
@@ -17,9 +18,6 @@ export default class Dashboard extends Component {
         }
     }
     
-    //need to have a check endpoint to seea if a user is logged in--if they
-    //have an auth_id--on componentDidMount -- get user then setState
-    //this.state.user.auth_id ? display : don't display
 
     componentDidMount(){
         // axios.get('/checklogin').then( response =>
@@ -34,8 +32,8 @@ export default class Dashboard extends Component {
                 {/* {this.state.user.authzeroid
                 ? */}
                 <Grid justify='center' alignItems='center' alignContent='center'>
+
                     <Menu/>
-                    <Facility/>
                     <ResidentList/>
                     <ADLList/>
                 </Grid>

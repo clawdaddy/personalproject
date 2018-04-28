@@ -199,7 +199,28 @@ class SaveButton extends Component {
         })
     }
     deleteADL(){
-        alert('Deleted')
+        const { buttonDisable } = this.state;
+        const { choiceObjects, currentADLID, selectedResidentID, saveChoiceObject } = this.props;
+        this.setState({
+            buttonDisable: !buttonDisable
+        })
+        
+        let newChoiceObjects = _.slice(choiceObjects, 0, choiceObjects.length)
+        let choiceObject = _.find(newChoiceObjects, choiceObj => {
+            return (choiceObj.residentID === selectedResidentID &&
+                choiceObj.adlID === currentADLID)
+        })
+        let deleteID = choiceObject.saveID
+
+        axios.delete('/api/deleteadl', {params: {deleteID:deleteID}}).then( result => {
+            alert('Deleted')
+        })
+        
+        let finalChoiceObjects = newChoiceObjects.filter( choiceObj => {
+            choiceObj.saveID !== deleteID
+        })
+        saveChoiceObject(finalChoiceObjects);
+
     }
     render(){
     return (

@@ -60,7 +60,7 @@ class Facility extends Component{
         })
     }
     render(){
-        const { classes, facility, group, facility: {caregroups} } = this.props;
+        const { classes, facility, group, facility: {caregroups}, toggleDrawerFn } = this.props;
         // const { caregroups } = this.state.facility;
         
         
@@ -93,6 +93,7 @@ class Facility extends Component{
                                 this.props.selectGroup(e.target.value)
                                 this.props.showResidentCard(false)
                                 this.props.showadllist(false)
+                                toggleDrawerFn(false)
                                 }
                             }
                             inputProps={{
