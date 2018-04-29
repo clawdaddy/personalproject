@@ -217,7 +217,7 @@ class SaveButton extends Component {
         })
         
         let finalChoiceObjects = newChoiceObjects.filter( choiceObj => {
-            choiceObj.saveID !== deleteID
+            return choiceObj.saveID !== deleteID
         })
         saveChoiceObject(finalChoiceObjects);
 

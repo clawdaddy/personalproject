@@ -3,7 +3,6 @@ import ResidentList from '../ResidentList/ResidentList';
 import './_Dashboard.scss';
 import Menu from '../Menu/Menu';
 import Grid from 'material-ui/Grid';
-import Facility from '../Facility/Facility';
 import ADLList from '../ADLList/ADLList';
 import axios from 'axios';
 

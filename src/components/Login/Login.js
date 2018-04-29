@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { loginUser } from './../../ducks/reducer';
 import { Link }  from 'react-router-dom';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
-import { loggingOut } from '../../ducks/reducer';
 import './_Login.scss';
 import LogoutSnackbar from '../LogoutSnackbar/LogoutSnackbar';
 
@@ -14,7 +13,8 @@ function Login (props) {
     function snackbar(){
         if (loggedOut){
             return (
-                <LogoutSnackbar/>
+                <LogoutSnackbar
+                update = {true}/>
             )
         }
     }
@@ -26,7 +26,9 @@ function Login (props) {
                         Login
                     </Button>
                 </a>
-                {snackbar()}
+                {loggedOut
+                ? <LogoutSnackbar/>
+                : null}
             </div>
         )
     }
@@ -35,4 +37,4 @@ function mapStateToProps( state ){
         loggedOut:state.loggedOut
     }
 }
-export default connect(mapStateToProps,{loggingOut})(Login)
+export default connect(mapStateToProps, null)(Login)

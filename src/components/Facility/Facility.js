@@ -3,9 +3,9 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
-import Input, { InputLabel } from 'material-ui/Input';
+import { InputLabel } from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
@@ -56,12 +56,10 @@ class Facility extends Component{
         const { search } = this.state;
         axios.get(`/api/facility/${search}`).then( response => {
             this.props.selectFacility(response.data[0])
-            // this.setState({facility: response.data[0]})
         })
     }
     render(){
-        const { classes, facility, group, facility: {caregroups}, toggleDrawerFn } = this.props;
-        // const { caregroups } = this.state.facility;
+        const { classes, group, facility: {caregroups}, toggleDrawerFn } = this.props;
         
         
         return (
