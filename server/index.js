@@ -96,5 +96,9 @@ app.post('/api/group', residentCtrl.getResidents)
 app.get('/api/adllist', adlctrl.getadlSchema)
 app.post('/api/postadl', adlctrl.postadl)
 app.patch('/api/patchadl', adlctrl.patchadl)
+app.delete('/api/deleteadl?:deleteID', adlctrl.deleteadl)
+
+// LOGOUT //
+app.delete('/api/logout', loginCtrl.logout)
 
 app.listen(SERVER_PORT, () => console.log( `Port ${ SERVER_PORT } is at attention sir!` ) )

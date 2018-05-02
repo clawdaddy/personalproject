@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import ADLButton from '../ADLButton/ADLButton';
 import ADL from '../ADL/ADL';
-import SelectedADL from '../SelectedADL/SelectedADL';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
+import GridList, { GridListTile } from 'material-ui/GridList';
 import { saveChoiceObject } from '../../ducks/reducer';
 
 const styles = theme => ({
@@ -24,10 +23,7 @@ const styles = theme => ({
         height:100,
         width:500
     },
-
 })
-
-
 class ADLList extends Component {
     constructor(){
         super();
@@ -35,47 +31,15 @@ class ADLList extends Component {
             selectedResidentID:-1,
             currentADL:-1,
         }
-        // this.handleClick = this.handleClick.bind( this );
         this.handleValue = this.handleValue.bind( this );
     }
-
     componentDidMount(){
         axios.get('/api/adllist').then( response => {
-            
-            
             this.setState({list: response.data})
             console.log(response.data)
-            
         })
     }
-
-    // componentDidUpdate(prevProps, prevState, snapshot){
-    //     const { groupsOnState, list } = prevState;
-    //     const { group, residentList, selectedResidentID } = this.props;
-        
-    //     if ( (!groupsOnState.includes(group)) && (residentList !== prevProps.residentList)){
-    //         let newGroups = [...groupsOnState, group]
-    //         let newGroup = {
-    //             [group]:[...residentList]
-    //         }
-    //         let newGroupWList = newGroup[group].map( (resident, i, arr) => {
-    //             return Object.assign({}, resident, {ADLList:list})
-    //         })
-    //         this.setState({
-    //             groupsOnState:newGroups,
-    //             [group]:newGroupWList,
-    //             currentGroup:group,
-    //             selectedResidentID:selectedResidentID
-    //         })
-    //     }
-
-    // }
-    // handleClick ( id ){
-    //     this.setState({currentADL: id})
-    // }
-
     handleValue ( choiceSet, choiceValue, choiceID, timeStamp, choiceExplain, choiceSetKey ){
-        const { currentGroup } = this.state;
         const { selectedResidentID, userID, choiceObjects, saveChoiceObject} = this.props;
         let choiceIndex = -1;
         let choiceObj = {}
@@ -86,7 +50,6 @@ class ADLList extends Component {
             && choiceObject.adlID === choiceID 
             && choiceObject.choiceSetKey === choiceSetKey)
         })
-        
         if (prevChoiceObj){
             choiceObj = Object.assign({
                 residentID:selectedResidentID,
@@ -117,38 +80,11 @@ class ADLList extends Component {
             newChoiceObjects.push(choiceObj)
         }
         saveChoiceObject(newChoiceObjects)
-        // let residentIndex = _.findIndex( this.state[currentGroup], resident => {
-        //     return resident.id === selectedResidentID
-        // } )
-        // let oldADLList = this.state[currentGroup][residentIndex].ADLList
-        // let newADLList = oldADLList.map( ADL => {
-        //     return Object.assign({}, ADL)
-        // })
-        // let adlIndex = _.findIndex( newADLList, ( adl ) => {
-        //     return adl.id === choiceID ;
-        // })
-        // let key = _.findKey(newADLList[adlIndex], ( property ) => {
-        //     return property.explain === choiceSet.explain;
-        // })
-        //something here assigning stuff to a newADLList
-        // let newResident = Object.assign(
-        //     {}, 
-        //     this.state[currentGroup][residentIndex], 
-        //     {ADLList:newADLList})
-        // let newGroup = [...this.state[currentGroup]]
-        // newGroup.splice([residentIndex],1,newResident)
-        // this.setState({ 
-        //     [currentGroup]: newGroup
-        //  });
-        
     }
     chosenADL (){
-        const { ADLSaved, list } = this.state;
+        const { list } = this.state;
         const { showadl, classes, selectedResidentID, currentADLID, choiceObjects } = this.props;
-        
-        //this line needs to change to reference old list, not grouplist
         let adlList = [...list]
-
         if ( currentADLID >= 0 && showadl === true){
             let displayADL = _.find(adlList, ( element ) => { return element.id === currentADLID } )
             return (
@@ -160,7 +96,6 @@ class ADLList extends Component {
                     currentADLID = { currentADLID }
                     choiceObjects = { choiceObjects }
                     />
-                    {/* <SavedADL choiceSet = { displayADL} /> */}
                 </div>
             )
         }
@@ -171,11 +106,8 @@ class ADLList extends Component {
         const { showadl, classes } = this.props;
         const { list } = this.state;
         const { handleClick } = this;
-        
         return (
             <div className = {classes.root}>
-                
-                
                 {showadl
                 ?
                 <div>
@@ -195,8 +127,6 @@ class ADLList extends Component {
                 </div>
                 :null
             }
-                
-                
             </div>
         )
     }

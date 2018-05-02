@@ -47,22 +47,11 @@ class SelectedADL extends Component{
                 text: choiceObject.adlChoiceExplain
             })
             
-            // let choiceObject = _.find( choiceSet.choices, ( choice ) => {
-            //     return choice.value === choiceSet.selected
-            // })
-            // choiceText = choiceObject.choice
-            // this.setState({
-            //     displayChoice:choiceSet.selected,
-            // })
-            // this.setState ( { text: choiceText} )
         }
     }
    
     render(){
-        console.log('current choice objects: ',this.props.choiceObjects)
-        console.log('currentADL', this.props.currentADLID)
         const { text } = this.state;
-        console.log(this.props)
         const { rerender, displayChoice } = this.state;
         const { choiceSet, selectedResidentID, choiceObjects, currentADLID, displayADL, rerenderADL } = this.props;
         

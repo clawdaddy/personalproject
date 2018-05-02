@@ -95,11 +95,16 @@ module.exports = {
             secondaryChoice, secondaryExplain, tertiaryChoice, tertiaryExplain,
             userID, timeStamp, saveID} = req.body.adlObj;
 
-        req.app.get('db').patchadl([primaryChoice, primaryExplain, secondaryChoice, secondaryExplain,
+        req.app.get('db').patch_adl_choice([primaryChoice, primaryExplain, secondaryChoice, secondaryExplain,
         tertiaryChoice, tertiaryExplain, userID, saveID])
         .then( id =>
         res.status(200).send(id))
+    },
+    deleteadl: (req, res, next) => {
+        const { deleteID } = req.query;
+        
+        req.app.get('db').delete_adl_choice([deleteID])
+        .then( () => res.sendStatus(200))
     }
-      
 
 }

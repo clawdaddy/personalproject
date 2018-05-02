@@ -1,29 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import SelectedADL from './../SelectedADL/SelectedADL';
 import SaveButton from '../SaveButton/SaveButton';
-import EditButton from '../EditButton/EditButton';
 import { connect } from 'react-redux';
 
 
 function ADL( props ){
-    // constructor() {
-    //     super();
-    //     this.state = {
-    //         adlChoice:
-    //     }
-    // }
     const { primary, secondary, tertiary, explanation, id, name } = props.displayADL;
     const { displayADL } = props;
     const { handleValueFn } = props;
     let primaryButtons = [];
     let secondaryButtons = [];
     let tertiaryButtons = [];
-    
-    // I AM SETTING THIS UP SO THAT IT GETS THE ADL INFO
-    //FROM THE REDUX STORE, I NEED TO FINISH THIS BEFORE IT WILL
-    //WORK AGAIN
     function displayButtons ( choiceSet ) {
         const { currentADLID, choiceObjects, selectedResidentID } = props;
         const choiceSetKey = _.findKey( displayADL, set =>
