@@ -22,7 +22,7 @@ function Login (props) {
             <div className = 'login'>
                 <h1>Oh CNAp</h1>
                 <a href = { process.env.REACT_APP_LOGIN }>
-                    <Button variant='raised' >
+                    <Button className='login-button' variant='raised' >
                         Login
                     </Button>
                 </a>

@@ -112,7 +112,7 @@ class Facility extends Component{
 
                     </FormControl>
                 </form>
-                
+                <p>(input "test facility", press get residents, then select a group to go through demo)</p>
             </div>
         )
     }
